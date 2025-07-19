@@ -1,1 +1,1 @@
-# Proyecto_Viton-Mario_Penna-Antonio
+# Image Generation Project
