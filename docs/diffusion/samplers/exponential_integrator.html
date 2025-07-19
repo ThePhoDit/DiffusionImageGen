@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>diffusion.samplers.exponential_integrator API documentation</title>
+<meta name="description" content="Exponential Integrator Sampler (specifically for VP-like ODEs).">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>diffusion.samplers.exponential_integrator</code></h1>
+</header>
+<section id="section-intro">
+<p>Exponential Integrator Sampler (specifically for VP-like ODEs).</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="diffusion.samplers.exponential_integrator.exponential_integrator_sampler"><code class="name flex">
+<span>def <span class="ident">exponential_integrator_sampler</span></span>(<span>diffusion_process,<br>score_model: torch.nn.modules.module.Module,<br>x_T: torch.Tensor,<br>t_0: float,<br>t_end: float,<br>n_steps: int,<br>class_labels=None,<br>eps_alpha: float = 1e-07,<br>use_notebook_tqdm: bool = False) ‑> tuple[torch.Tensor, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def exponential_integrator_sampler(
+    diffusion_process,  # Instance of VPDiffusionProcess
+    score_model: torch.nn.Module,  # The trained score network
+    x_T: Tensor,  # Initial noise sample at t=T, shape (batch, C, H, W)
+    t_0: float,  # Starting integration time (usually T)
+    t_end: float,  # End integration time (usually eps &gt; 0)
+    n_steps: int,  # Number of discretization steps
+    class_labels=None,  # Optional class labels for conditional generation
+    eps_alpha: float = 1e-7,  # Small epsilon for stability
+    use_notebook_tqdm: bool = False,  # &lt;-- Add flag
+) -&gt; tuple[Tensor, Tensor]:
+    &#34;&#34;&#34;
+    Implements a first-order Exponential Integrator (Exponential Euler) sampler.
+    Designed for VP SDEs where the ODE is dx = [-1/2*beta*x - 1/2*beta*score] dt
+
+    Update Rule (Exponential Euler):
+    x_{i+1} = exp_term * x_i + non_linear_term * dt
+    where exp_term = sqrt(alpha_bar(t_{i+1}) / alpha_bar(t_i))
+    and non_linear_term = -1/2 * beta(t_i) * score(x_i, t_i)
+
+    Args:
+        diffusion_process: An object providing VP schedule methods (beta, alpha_bar, score_fn).
+                           Must be VPDiffusionProcess or have compatible attributes.
+        score_model: The trained neural network model.
+        x_T: Initial state tensor at time t_0 (typically T).
+        t_0: Starting time of the reverse process.
+        t_end: Ending time of the reverse process.
+        n_steps: Number of discretization steps.
+        class_labels: Optional tensor of class labels for conditional models.
+        eps_alpha: Small value added to alpha_bar in denominator for stability.
+        use_notebook_tqdm: If True, use tqdm.notebook, otherwise use standard tqdm.
+
+    Returns:
+        A tuple (times, samples) where times is a tensor of time points and samples
+        is a tensor containing the trajectory of samples shape (*x_T.shape, n_steps+1).
+    &#34;&#34;&#34;
+    # Check if the process is suitable (has beta and alpha_bar and score_fn)
+    if not (
+        hasattr(diffusion_process, &#34;beta&#34;)
+        and hasattr(diffusion_process, &#34;alpha_bar&#34;)
+        and hasattr(diffusion_process, &#34;score_fn&#34;)
+    ):
+        raise TypeError(
+            &#34;Exponential Integrator requires a diffusion process with &#39;beta&#39;, &#39;alpha_bar&#39;, and &#39;score_fn&#39; functions (e.g., VPDiffusionProcess).&#34;
+        )
+    if getattr(diffusion_process, &#34;kind&#34;, &#34;&#34;) != &#34;VP&#34;:
+        warnings.warn(
+            &#34;Exponential Integrator is designed for VP processes. Results with other processes may be unexpected.&#34;
+        )
+
+    device = x_T.device
+    # Create time discretization
+    times = torch.linspace(t_0, t_end, n_steps + 1, device=device)
+    dt = (t_end - t_0) / n_steps  # Negative dt
+
+    # Get necessary functions from the VP process
+    beta_fn = diffusion_process.beta
+    alpha_bar_fn = diffusion_process.alpha_bar
+    score_fn = diffusion_process.score_fn
+
+    # Initialize tensor to store trajectory
+    x_t_traj = torch.zeros(
+        (*x_T.shape, n_steps + 1), device=device, dtype=x_T.dtype
+    )
+    x_t = x_T.clone()
+    x_t_traj[..., 0] = x_t
+
+    print(&#34;Running Exponential Integrator Sampler (for VP)&#34;)
+
+    # Iterate backwards in time
+    time_steps_iter = range(n_steps)
+    desc = &#34;Exp. Integrator Sampling Steps&#34;
+    if use_notebook_tqdm:
+        from tqdm.notebook import tqdm
+
+        time_steps_iter = tqdm(time_steps_iter, desc=desc)
+    else:
+        try:
+            from tqdm import tqdm
+
+            time_steps_iter = tqdm(time_steps_iter, desc=desc)
+        except ImportError:
+            pass  # Run without tqdm
+
+    for n in time_steps_iter:
+        t_current = times[n]
+        t_next = times[n + 1]
+
+        # --- Calculate terms for the update ---
+        vec_t_current = torch.ones(x_t.shape[0], device=device) * t_current
+        vec_t_next = torch.ones(x_t.shape[0], device=device) * t_next
+
+        # Exponential term: sqrt(alpha_bar(t_next) / alpha_bar(t_current))
+        alpha_bar_t_curr = alpha_bar_fn(vec_t_current).view(
+            -1, *([1] * (x_t.dim() - 1))
+        )
+        alpha_bar_t_next = alpha_bar_fn(vec_t_next).view(
+            -1, *([1] * (x_t.dim() - 1))
+        )
+        exp_term = torch.sqrt(
+            alpha_bar_t_next / torch.clamp(alpha_bar_t_curr, min=eps_alpha)
+        )
+        # Clamping might not be strictly necessary as alpha_bar decreases, but safe
+        exp_term = torch.clamp(exp_term, 0.0, 1.0)
+
+        # Non-linear term N(x_i, t_i) = -1/2 * beta(t_i) * score(x_i, t_i)
+        beta_t_curr = beta_fn(vec_t_current).view(-1, *([1] * (x_t.dim() - 1)))
+        score = score_fn(score_model, x_t, vec_t_current, class_labels)
+        # Clamp score? Optional, depends on model stability.
+        # score = torch.clamp(score, -1000, 1000)
+        non_linear_term = -0.5 * beta_t_curr * score
+
+        # --- Apply Exponential Integrator Update ---
+        # x_{i+1} = exp_term * x_i + non_linear_term * dt
+        x_t = exp_term * x_t + non_linear_term * dt
+
+        # Store the state in the trajectory
+        x_t_traj[..., n + 1] = x_t
+
+        # Optional: Check for NaNs
+        if torch.isnan(x_t).any():
+            print(
+                f&#34;!!! NaN detected at step {n}, t={t_current:.4f}. Stopping early. !!!&#34;
+            )
+            return times, x_t_traj
+
+    # Return times and trajectory
+    return times, x_t_traj</code></pre>
+</details>
+<div class="desc"><p>Implements a first-order Exponential Integrator (Exponential Euler) sampler.
+Designed for VP SDEs where the ODE is dx = [-1/2<em>beta</em>x - 1/2<em>beta</em>score] dt</p>
+<p>Update Rule (Exponential Euler):
+x_{i+1} = exp_term * x_i + non_linear_term * dt
+where exp_term = sqrt(alpha_bar(t_{i+1}) / alpha_bar(t_i))
+and non_linear_term = -1/2 * beta(t_i) * score(x_i, t_i)</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>diffusion_process</code></strong></dt>
+<dd>An object providing VP schedule methods (beta, alpha_bar, score_fn).
+Must be VPDiffusionProcess or have compatible attributes.</dd>
+<dt><strong><code>score_model</code></strong></dt>
+<dd>The trained neural network model.</dd>
+<dt><strong><code>x_T</code></strong></dt>
+<dd>Initial state tensor at time t_0 (typically T).</dd>
+<dt><strong><code>t_0</code></strong></dt>
+<dd>Starting time of the reverse process.</dd>
+<dt><strong><code>t_end</code></strong></dt>
+<dd>Ending time of the reverse process.</dd>
+<dt><strong><code>n_steps</code></strong></dt>
+<dd>Number of discretization steps.</dd>
+<dt><strong><code>class_labels</code></strong></dt>
+<dd>Optional tensor of class labels for conditional models.</dd>
+<dt><strong><code>eps_alpha</code></strong></dt>
+<dd>Small value added to alpha_bar in denominator for stability.</dd>
+<dt><strong><code>use_notebook_tqdm</code></strong></dt>
+<dd>If True, use tqdm.notebook, otherwise use standard tqdm.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A tuple (times, samples) where times is a tensor of time points and samples
+is a tensor containing the trajectory of samples shape (*x_T.shape, n_steps+1).</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="diffusion.samplers" href="index.html">diffusion.samplers</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="diffusion.samplers.exponential_integrator.exponential_integrator_sampler" href="#diffusion.samplers.exponential_integrator.exponential_integrator_sampler">exponential_integrator_sampler</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

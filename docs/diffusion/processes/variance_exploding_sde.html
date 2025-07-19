@@ -1,0 +1,1615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>diffusion.processes.variance_exploding_sde API documentation</title>
+<meta name="description" content="Implements the Variance Exploding (VE) Stochastic Differential Equation (SDE)
+process, including its definition, score calculation, loss function,
+…">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>diffusion.processes.variance_exploding_sde</code></h1>
+</header>
+<section id="section-intro">
+<p>Implements the Variance Exploding (VE) Stochastic Differential Equation (SDE)
+process, including its definition, score calculation, loss function, and
+associated training and sampling helper functions.</p>
+<p>Based on the paper "Score-Based Generative Modeling through Stochastic
+Differential Equations" (Song et al., 2021), specifically the VE SDE variant.</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="diffusion.processes.variance_exploding_sde.generate_images"><code class="name flex">
+<span>def <span class="ident">generate_images</span></span>(<span>diffusion_process: <a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess">VEDiffusionProcess</a>,<br>score_model: torch.nn.modules.module.Module,<br>n_images: int = 16,<br>target_class: int = None,<br>image_size: tuple = (32, 32),<br>n_channels: int = 3,<br>n_steps: int = 1000,<br>sampler_type: str = 'euler_maruyama',<br>eps: float = 0.001,<br>pc_snr: float = 0.1,<br>pc_num_corrector_steps: int = 1,<br>ode_early_stop_time: float = None,<br>ode_use_rk4: bool = True,<br>clamp_final: bool = True,<br>clamp_range: tuple = (-1.0, 1.0),<br>use_notebook_tqdm: bool = False) ‑> torch.Tensor</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_images(
+    diffusion_process: VEDiffusionProcess,
+    score_model: nn.Module,
+    n_images: int = 16,
+    target_class: int = None,
+    image_size: tuple = (32, 32),
+    n_channels: int = 3,
+    n_steps: int = 1000,
+    sampler_type: str = &#34;euler_maruyama&#34;,
+    eps: float = 1e-3,
+    pc_snr: float = 0.1,
+    pc_num_corrector_steps: int = 1,
+    ode_early_stop_time: float = None,
+    ode_use_rk4: bool = True,
+    clamp_final: bool = True,
+    clamp_range: tuple = (-1.0, 1.0),
+    use_notebook_tqdm: bool = False,
+) -&gt; Tensor:
+    &#34;&#34;&#34;
+    Generates images by solving the reverse SDE associated with the diffusion process.
+
+    Starts from random noise at time T and integrates backward to time eps (~0)
+    using a specified numerical SDE solver (sampler).
+
+    Args:
+        diffusion_process: The diffusion process instance defining the reverse SDE.
+        score_model: The trained score network.
+        n_images: Number of images to generate.
+        target_class: If generating conditionally, the target class index. If None,
+                      generation is unconditional (or uses default if model requires it).
+        image_size: Tuple representing the desired (height, width) of the images.
+        n_channels: Number of channels for the generated images.
+        n_steps: Number of discretization steps for the sampler.
+        sampler_type: Name of the sampler to use (&#39;euler_maruyama&#39;, &#39;pc&#39;, &#39;ode&#39;, &#39;ei&#39;).
+        eps: The final time step (close to 0) for the reverse integration.
+        pc_snr: Signal-to-noise ratio for the Predictor-Corrector sampler&#39;s corrector step.
+        pc_num_corrector_steps: Number of corrector steps in the PC sampler.
+        ode_early_stop_time: Optional time &lt; T to stop ODE integration early.
+        ode_use_rk4: If True, use RK4 method for ODE sampler; otherwise, use Euler.
+        clamp_final: Whether to clamp the final generated image pixel values.
+        clamp_range: Tuple (min, max) for final image clamping.
+        use_notebook_tqdm: If True, use tqdm.notebook for progress bars.
+
+    Returns:
+        A tensor containing the generated images, shape [n_images, n_channels, height, width].
+
+    Raises:
+        ValueError: If an unknown sampler_type is provided.
+    &#34;&#34;&#34;
+    score_model.eval()
+
+    # Initial random sample at time T (from N(0, I))
+    # The sampler will handle scaling/adjustment based on the process
+    x_T = torch.randn(
+        (n_images, n_channels, image_size[0], image_size[1]), device=device
+    )
+    T_start = diffusion_process.T
+
+    # --- Class Conditioning Setup --- #
+    class_labels = None
+    model_module = (
+        score_model.module
+        if isinstance(score_model, nn.DataParallel)
+        else score_model
+    )
+    model_is_conditional = getattr(model_module, &#34;use_class_condition&#34;, False)
+
+    if target_class is not None:
+        if model_is_conditional:
+            print(
+                f&#34;Generating {n_images} images conditionally for class {target_class}.&#34;
+            )
+            class_labels = torch.full(
+                (n_images,), target_class, dtype=torch.long, device=device
+            )
+        else:
+            warnings.warn(
+                f&#34;Target class {target_class} requested, but the loaded model is unconditional. Ignoring class label.&#34;,
+                RuntimeWarning,
+            )
+    elif model_is_conditional:
+        warnings.warn(
+            &#34;Model is conditional, but no target class specified. Generating unconditionally (may use zero embedding internally).&#34;,
+            RuntimeWarning,
+        )
+        # class_labels remains None; ScoreNet handles this case
+
+    # --- Get SDE Components from the Process --- #
+    # Note: These functions return callables
+    reverse_drift_fn_base = diffusion_process.sde_drift_reverse(score_model)
+    reverse_diffusion_fn = diffusion_process.sde_diffusion_reverse()
+
+    # --- Prepare Sampler Arguments --- #
+    # Wrap drift to handle class labels consistently for all samplers
+    def reverse_drift_wrapper(x: torch.Tensor, t: torch.Tensor) -&gt; torch.Tensor:
+        return reverse_drift_fn_base(x, t, class_labels=class_labels)
+
+    # Diffusion usually only needs time `t`
+    def reverse_diffusion_wrapper(t: torch.Tensor) -&gt; torch.Tensor:
+        # Add a batch dimension if t is scalar for broadcasting in sampler
+        t_batched = t if t.dim() &gt; 0 else t.unsqueeze(0)
+        diff_val = reverse_diffusion_fn(t_batched)
+        # Ensure output has a batch dim, even if input t was scalar
+        return diff_val.view(-1, *([1] * (x_T.dim() - 1)))  # Broadcastable
+
+    # --- Select and Run Sampler --- #
+    sampler_name = sampler_type.lower().replace(&#34;-&#34;, &#34;_&#34;)  # Normalize name
+    print(
+        f&#34;Generating {n_images} images using {diffusion_process.kind} reverse SDE...&#34;
+    )
+    print(f&#34;Sampler: {sampler_name}, Steps: {n_steps}, T_end={eps}&#34;)
+
+    final_images = None
+    with torch.no_grad():
+        if sampler_name in [&#34;euler_maruyama&#34;, &#34;euler&#34;]:
+            times, synthetic_images_t = euler_maruyama_integrator(
+                x_0=x_T,
+                t_0=T_start,
+                t_end=eps,
+                n_steps=n_steps,
+                drift_coefficient=reverse_drift_wrapper,
+                diffusion_coefficient=reverse_diffusion_wrapper,
+            )
+            final_images = synthetic_images_t[..., -1]  # Sample at t_end
+
+        elif sampler_name in [&#34;pc&#34;, &#34;predictor_corrector&#34;]:
+            print(
+                f&#34;PC Sampler Params: SNR={pc_snr}, Corrector Steps={pc_num_corrector_steps}&#34;
+            )
+            times, synthetic_images_t = pc_sampler(
+                diffusion_process=diffusion_process,
+                score_model=score_model,
+                x_T=x_T,
+                t_0=T_start,
+                t_end=eps,
+                n_steps=n_steps,
+                snr=pc_snr,
+                num_corrector_steps=pc_num_corrector_steps,
+                class_labels=class_labels,
+                use_notebook_tqdm=use_notebook_tqdm,
+            )
+            final_images = synthetic_images_t[..., -1]
+
+        elif sampler_name == &#34;ode&#34;:
+            print(
+                f&#34;ODE Sampler Params: RK4={&#39;Yes&#39; if ode_use_rk4 else &#39;No&#39;}, Early Stop={ode_early_stop_time}&#34;
+            )
+            times, synthetic_images_t = probability_flow_ode_sampler(
+                diffusion_process=diffusion_process,
+                score_model=score_model,
+                x_T=x_T,
+                t_0=T_start,
+                t_end=eps,
+                n_steps=n_steps,
+                class_labels=class_labels,
+                early_stop_time=ode_early_stop_time,
+                use_rk4=ode_use_rk4,
+                use_notebook_tqdm=use_notebook_tqdm,
+            )
+            final_images = synthetic_images_t[..., -1]
+
+        elif sampler_name in [&#34;ei&#34;, &#34;exponential_integrator&#34;]:
+            print(&#34;Using Exponential Integrator sampler.&#34;)
+            times, synthetic_images_t = exponential_integrator_sampler(
+                diffusion_process=diffusion_process,
+                score_model=score_model,
+                x_T=x_T,
+                t_0=T_start,
+                t_end=eps,
+                n_steps=n_steps,
+                class_labels=class_labels,
+                use_notebook_tqdm=use_notebook_tqdm,
+            )
+            final_images = synthetic_images_t[..., -1]
+
+        elif sampler_name == &#34;etd1&#34;:
+            print(&#34;Using ETD1 sampler...&#34;)
+            # ETD1 sampler takes the process object directly
+            _, samples_traj = etd1_sampler(
+                **{
+                    &#34;diffusion_process&#34;: diffusion_process,
+                    &#34;score_model&#34;: score_model,
+                    &#34;x_T&#34;: x_T,
+                    &#34;t_0&#34;: T_start,
+                    &#34;t_end&#34;: eps,
+                    &#34;n_steps&#34;: n_steps,
+                    &#34;class_labels&#34;: class_labels,
+                    &#34;use_notebook_tqdm&#34;: use_notebook_tqdm,
+                },
+            )
+            final_images = samples_traj[..., -1]
+
+        else:
+            raise ValueError(f&#34;Unknown sampler_type: {sampler_type}&#34;)
+
+    # --- Final Processing --- #
+    if clamp_final:
+        final_images = torch.clamp(
+            final_images, min=clamp_range[0], max=clamp_range[1]
+        )
+        print(f&#34;Final images clamped to range {clamp_range}.&#34;)
+    else:
+        print(&#34;Final image clamping skipped.&#34;)
+
+    print(&#34;Image generation finished.&#34;)
+    return final_images</code></pre>
+</details>
+<div class="desc"><p>Generates images by solving the reverse SDE associated with the diffusion process.</p>
+<p>Starts from random noise at time T and integrates backward to time eps (~0)
+using a specified numerical SDE solver (sampler).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>diffusion_process</code></strong></dt>
+<dd>The diffusion process instance defining the reverse SDE.</dd>
+<dt><strong><code>score_model</code></strong></dt>
+<dd>The trained score network.</dd>
+<dt><strong><code>n_images</code></strong></dt>
+<dd>Number of images to generate.</dd>
+<dt><strong><code>target_class</code></strong></dt>
+<dd>If generating conditionally, the target class index. If None,
+generation is unconditional (or uses default if model requires it).</dd>
+<dt><strong><code>image_size</code></strong></dt>
+<dd>Tuple representing the desired (height, width) of the images.</dd>
+<dt><strong><code>n_channels</code></strong></dt>
+<dd>Number of channels for the generated images.</dd>
+<dt><strong><code>n_steps</code></strong></dt>
+<dd>Number of discretization steps for the sampler.</dd>
+<dt><strong><code>sampler_type</code></strong></dt>
+<dd>Name of the sampler to use ('euler_maruyama', 'pc', 'ode', 'ei').</dd>
+<dt><strong><code>eps</code></strong></dt>
+<dd>The final time step (close to 0) for the reverse integration.</dd>
+<dt><strong><code>pc_snr</code></strong></dt>
+<dd>Signal-to-noise ratio for the Predictor-Corrector sampler's corrector step.</dd>
+<dt><strong><code>pc_num_corrector_steps</code></strong></dt>
+<dd>Number of corrector steps in the PC sampler.</dd>
+<dt><strong><code>ode_early_stop_time</code></strong></dt>
+<dd>Optional time &lt; T to stop ODE integration early.</dd>
+<dt><strong><code>ode_use_rk4</code></strong></dt>
+<dd>If True, use RK4 method for ODE sampler; otherwise, use Euler.</dd>
+<dt><strong><code>clamp_final</code></strong></dt>
+<dd>Whether to clamp the final generated image pixel values.</dd>
+<dt><strong><code>clamp_range</code></strong></dt>
+<dd>Tuple (min, max) for final image clamping.</dd>
+<dt><strong><code>use_notebook_tqdm</code></strong></dt>
+<dd>If True, use tqdm.notebook for progress bars.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A tensor containing the generated images, shape [n_images, n_channels, height, width].</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If an unknown sampler_type is provided.</dd>
+</dl></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.get_score_model"><code class="name flex">
+<span>def <span class="ident">get_score_model</span></span>(<span>diffusion_process: <a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess">VEDiffusionProcess</a>,<br>image_channels: int = 3,<br>num_classes: int = None,<br>scorenet_channels: list[int] = [64, 128, 256, 512],<br>scorenet_embed_dim: int = 256) ‑> torch.nn.modules.module.Module</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_score_model(
+    diffusion_process: VEDiffusionProcess,
+    image_channels: int = 3,
+    num_classes: int = None,
+    scorenet_channels: list[int] = [64, 128, 256, 512],
+    scorenet_embed_dim: int = 256,
+) -&gt; nn.Module:
+    &#34;&#34;&#34;
+    Creates and initializes a ScoreNet model configured for the given diffusion process.
+
+    Automatically uses the appropriate marginal probability standard deviation function
+    from the provided diffusion process instance and handles DataParallel setup.
+
+    Args:
+        diffusion_process: An instance of a diffusion process class (e.g., VEDiffusionProcess).
+        image_channels: Number of channels in the input/output images.
+        num_classes: Number of classes for conditional modeling. If None, model is unconditional.
+        scorenet_channels: List of channel counts for U-Net blocks in ScoreNet.
+        scorenet_embed_dim: Embedding dimension for time/class in ScoreNet.
+
+    Returns:
+        The initialized ScoreNet model (possibly wrapped in nn.DataParallel), moved to the appropriate device.
+
+    Raises:
+        ValueError: If diffusion_process is None.
+    &#34;&#34;&#34;
+    if diffusion_process is None:
+        raise ValueError(&#34;Diffusion process instance must be provided.&#34;)
+
+    print(
+        f&#34;Getting ScoreModel configured for {diffusion_process.kind} process.&#34;
+    )
+
+    # Wrapper to provide the marginal_prob_std function required by ScoreNet
+    def _std_dev_wrapper(t: torch.Tensor) -&gt; torch.Tensor:
+        &#34;&#34;&#34;Extracts std deviation from the process&#39;s marginal_prob method.&#34;&#34;&#34;
+        # Needs a dummy x_0 to call marginal_prob. Shape/content don&#39;t matter.
+        t_dev = t.to(device)
+        batch_size = t_dev.shape[0] if t_dev.dim() &gt; 0 else 1
+        dummy_x0 = torch.zeros(
+            (batch_size, 1, 1, 1), device=device  # Minimal shape
+        )
+        _, std_dev = diffusion_process.marginal_prob(dummy_x0, t_dev)
+        # Ensure output shape is [batch_size]
+        return std_dev.view(batch_size)
+
+    # Create the ScoreNet instance
+    score_model_instance = ScoreNet(
+        marginal_prob_std=_std_dev_wrapper,
+        image_channels=image_channels,
+        channels=scorenet_channels,
+        embed_dim=scorenet_embed_dim,
+        num_classes=num_classes,
+        # For VE, ScoreNet output is the score, so disable_final_scaling should be False.
+        # For VP, if model predicts noise ε, set disable_final_scaling=True.
+        disable_final_scaling=(diffusion_process.kind == &#34;VP&#34;),
+    )
+
+    # Use DataParallel if multiple GPUs are available
+    if torch.cuda.device_count() &gt; 1:
+        print(
+            f&#34;Using {torch.cuda.device_count()} GPUs! Wrapping model in DataParallel.&#34;
+        )
+        score_model = nn.DataParallel(score_model_instance)
+    else:
+        score_model = score_model_instance
+
+    return score_model.to(device)</code></pre>
+</details>
+<div class="desc"><p>Creates and initializes a ScoreNet model configured for the given diffusion process.</p>
+<p>Automatically uses the appropriate marginal probability standard deviation function
+from the provided diffusion process instance and handles DataParallel setup.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>diffusion_process</code></strong></dt>
+<dd>An instance of a diffusion process class (e.g., VEDiffusionProcess).</dd>
+<dt><strong><code>image_channels</code></strong></dt>
+<dd>Number of channels in the input/output images.</dd>
+<dt><strong><code>num_classes</code></strong></dt>
+<dd>Number of classes for conditional modeling. If None, model is unconditional.</dd>
+<dt><strong><code>scorenet_channels</code></strong></dt>
+<dd>List of channel counts for U-Net blocks in ScoreNet.</dd>
+<dt><strong><code>scorenet_embed_dim</code></strong></dt>
+<dd>Embedding dimension for time/class in ScoreNet.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The initialized ScoreNet model (possibly wrapped in nn.DataParallel), moved to the appropriate device.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If diffusion_process is None.</dd>
+</dl></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.load_model"><code class="name flex">
+<span>def <span class="ident">load_model</span></span>(<span>diffusion_process: <a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess">VEDiffusionProcess</a>,<br>model_path: str,<br>image_channels: int = 3,<br>num_classes: int = None) ‑> torch.nn.modules.module.Module</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_model(
+    diffusion_process: VEDiffusionProcess,
+    model_path: str,
+    image_channels: int = 3,
+    num_classes: int = None,
+) -&gt; nn.Module:
+    &#34;&#34;&#34;
+    Loads a pre-trained ScoreNet model state dictionary from a file.
+
+    Configures the model structure based on the provided diffusion process and
+    parameters, then loads the weights. Handles potential mismatches in keys
+    due to saving/loading with or without nn.DataParallel.
+
+    Args:
+        diffusion_process: The diffusion process instance the model was trained for.
+        model_path: Path to the saved state dictionary (.pth file).
+        image_channels: Number of image channels the model expects.
+        num_classes: Number of classes if the model is conditional.
+
+    Returns:
+        The loaded model, set to evaluation mode and moved to the appropriate device.
+    &#34;&#34;&#34;
+    print(f&#34;Loading model from: {model_path}&#34;)
+    # Get the base model structure
+    model = get_score_model(
+        diffusion_process,
+        image_channels=image_channels,
+        num_classes=num_classes,
+    )
+
+    # Load the saved state dictionary
+    state_dict = torch.load(model_path, map_location=torch.device(device))
+
+    # Adjust keys if DataParallel wrapper status differs between saving and loading
+    is_parallel_model = isinstance(model, nn.DataParallel)
+    is_parallel_state = list(state_dict.keys())[0].startswith(&#34;module.&#34;)
+
+    if is_parallel_model and not is_parallel_state:
+        print(
+            &#34;Adding &#39;module.&#39; prefix to state_dict keys for DataParallel model.&#34;
+        )
+        state_dict = {&#34;module.&#34; + k: v for k, v in state_dict.items()}
+    elif not is_parallel_model and is_parallel_state:
+        print(
+            &#34;Removing &#39;module.&#39; prefix from state_dict keys for non-DataParallel model.&#34;
+        )
+        state_dict = {
+            k.partition(&#34;module.&#34;)[2]: v for k, v in state_dict.items()
+        }
+
+    # Load the potentially adjusted state dictionary
+    model.load_state_dict(state_dict)
+    model.eval()  # Set to evaluation mode after loading
+    print(&#34;Model loaded successfully.&#34;)
+    return model</code></pre>
+</details>
+<div class="desc"><p>Loads a pre-trained ScoreNet model state dictionary from a file.</p>
+<p>Configures the model structure based on the provided diffusion process and
+parameters, then loads the weights. Handles potential mismatches in keys
+due to saving/loading with or without nn.DataParallel.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>diffusion_process</code></strong></dt>
+<dd>The diffusion process instance the model was trained for.</dd>
+<dt><strong><code>model_path</code></strong></dt>
+<dd>Path to the saved state dictionary (.pth file).</dd>
+<dt><strong><code>image_channels</code></strong></dt>
+<dd>Number of image channels the model expects.</dd>
+<dt><strong><code>num_classes</code></strong></dt>
+<dd>Number of classes if the model is conditional.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The loaded model, set to evaluation mode and moved to the appropriate device.</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.train"><code class="name flex">
+<span>def <span class="ident">train</span></span>(<span>diffusion_process: <a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess">VEDiffusionProcess</a>,<br>data_train: torch.utils.data.dataset.Dataset,<br>batch_size: int = 32,<br>n_epochs: int = 10,<br>learning_rate: float = 0.0001,<br>save_model_to: str = 'checkpoint.pth',<br>grad_clip_val: float = 1.0,<br>use_class_condition: bool = False,<br>num_classes: int = None,<br>image_channels: int = 3,<br>save_checkpoint_every: int = 10,<br>use_notebook_tqdm: bool = False) ‑> torch.nn.modules.module.Module</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train(
+    diffusion_process: VEDiffusionProcess,
+    data_train: Dataset,
+    batch_size: int = 32,
+    n_epochs: int = 10,
+    learning_rate: float = 1e-4,
+    save_model_to: str = &#34;checkpoint.pth&#34;,
+    grad_clip_val: float = 1.0,
+    use_class_condition: bool = False,
+    num_classes: int = None,
+    image_channels: int = 3,
+    save_checkpoint_every: int = 10,
+    use_notebook_tqdm: bool = False,
+) -&gt; nn.Module:
+    &#34;&#34;&#34;
+    Trains the ScoreNet model using the specified diffusion process and dataset.
+
+    Handles the training loop, optimization, loss calculation (delegated to the
+    diffusion_process instance), gradient clipping, progress reporting, and
+    saving the final model and periodic checkpoints.
+
+    Args:
+        diffusion_process: The diffusion process instance defining the SDE and loss.
+        data_train: The training dataset (torch.utils.data.Dataset).
+        batch_size: Training batch size.
+        n_epochs: Number of training epochs.
+        learning_rate: Optimizer learning rate.
+        save_model_to: Path to save the final trained model state dictionary.
+        grad_clip_val: Maximum gradient norm for clipping (set &lt;= 0 to disable).
+        use_class_condition: Whether to train a class-conditional model.
+        num_classes: Number of classes (required if use_class_condition is True).
+        image_channels: Number of channels in the training images.
+        save_checkpoint_every: Save a checkpoint every N epochs.
+        use_notebook_tqdm: If True, use tqdm.notebook for progress bars (for Jupyter).
+
+    Returns:
+        The trained ScoreNet model.
+
+    Raises:
+        ValueError: If use_class_condition is True but num_classes is not provided.
+    &#34;&#34;&#34;
+
+    # --- Conditional tqdm import ---
+    if use_notebook_tqdm:
+        from tqdm.notebook import trange, tqdm
+    else:
+        from tqdm import trange, tqdm
+    # -----------------------------
+
+    if use_class_condition and num_classes is None:
+        raise ValueError(
+            &#34;num_classes must be provided if use_class_condition is True.&#34;
+        )
+
+    # Initialize model and optimizer
+    score_model = get_score_model(
+        diffusion_process,
+        image_channels=image_channels,
+        num_classes=num_classes if use_class_condition else None,
+    )
+    optimizer = Adam(score_model.parameters(), lr=learning_rate)
+
+    # Ensure model save directory exists
+    os.makedirs(os.path.dirname(save_model_to), exist_ok=True)
+
+    # Setup DataLoader
+    data_loader = DataLoader(
+        data_train,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=min(n_threads, 4),
+        pin_memory=(device == &#34;cuda&#34;),
+        drop_last=True,
+    )
+
+    tqdm_epoch = trange(n_epochs, desc=&#34;Training Progress&#34;)
+    nan_batches_total = 0
+
+    print(f&#34;--- Starting Training ---&#34;)
+    print(f&#34;Process: {diffusion_process.kind}&#34;)
+    print(f&#34;Class conditioning: {use_class_condition}&#34;)
+    if use_class_condition:
+        print(f&#34;Num classes: {num_classes}&#34;)
+    print(f&#34;Epochs: {n_epochs}, Batch size: {batch_size}, LR: {learning_rate}&#34;)
+    print(
+        f&#34;Gradient Clipping: {grad_clip_val if grad_clip_val &gt; 0 else &#39;Disabled&#39;}&#34;
+    )
+    print(f&#34;Saving final model to: {save_model_to}&#34;)
+    print(f&#34;Saving checkpoints every {save_checkpoint_every} epochs.&#34;)
+    print(f&#34;Using device: {device}&#34;)
+    print(f&#34;-------------------------&#34;)
+
+    for epoch in tqdm_epoch:
+        score_model.train()
+        epoch_loss = 0.0
+        num_items = 0
+        nan_batches_epoch = 0
+
+        batch_progress = tqdm(
+            data_loader, desc=f&#34;Epoch {epoch + 1}/{n_epochs}&#34;, leave=False
+        )
+
+        for batch_idx, batch_data in enumerate(batch_progress):
+            # Handle datasets yielding (image, label) or just image
+            if isinstance(batch_data, (list, tuple)):
+                x, y = batch_data
+                y = y.to(device) if use_class_condition else None
+            else:
+                x = batch_data
+                y = None
+
+            x = x.to(device)
+
+            # Calculate loss using the diffusion process&#39;s loss function
+            loss = diffusion_process.loss_fn(score_model, x, y)
+
+            # --- Gradient Update --- #
+            optimizer.zero_grad()
+
+            # Check for NaN/Inf loss before backward pass
+            if torch.isnan(loss) or torch.isinf(loss):
+                warnings.warn(
+                    f&#34;NaN/Inf loss detected in batch {batch_idx}, epoch {epoch}. Skipping backward pass and optimizer step.&#34;,
+                    RuntimeWarning,
+                )
+                nan_batches_epoch += 1
+                nan_batches_total += 1
+                # No optimizer step needed if loss is invalid
+                continue
+
+            loss.backward()
+
+            # Gradient Clipping (apply before optimizer step)
+            if grad_clip_val &gt; 0:
+                torch.nn.utils.clip_grad_norm_(
+                    score_model.parameters(), grad_clip_val
+                )
+
+            optimizer.step()
+            # --------------------- #
+
+            batch_loss_item = loss.item()
+            epoch_loss += batch_loss_item * x.shape[0]
+            num_items += x.shape[0]
+            current_avg_loss = epoch_loss / max(num_items, 1)
+
+            batch_progress.set_postfix(
+                {
+                    &#34;batch_loss&#34;: f&#34;{batch_loss_item:.4f}&#34;,
+                    &#34;avg_epoch_loss&#34;: f&#34;{current_avg_loss:.4f}&#34;,
+                    &#34;lr&#34;: f&#34;{optimizer.param_groups[0][&#39;lr&#39;]:.6f}&#34;,
+                    &#34;nans_epoch&#34;: nan_batches_epoch,
+                }
+            )
+
+        # End of Epoch
+        final_epoch_loss = epoch_loss / max(num_items, 1)
+        nan_batches_total += nan_batches_epoch
+        tqdm_epoch.set_postfix(
+            {
+                &#34;epoch_loss&#34;: f&#34;{final_epoch_loss:.4f}&#34;,
+                &#34;total_nan_batches&#34;: nan_batches_total,
+            }
+        )
+
+        # --- Save Checkpoint --- #
+        if (epoch + 1) % save_checkpoint_every == 0 or (epoch + 1) == n_epochs:
+            chkpt_dir = os.path.dirname(save_model_to)
+            base_name = os.path.basename(save_model_to)
+            file_root, file_ext = os.path.splitext(base_name)
+            chkpt_name = os.path.join(
+                chkpt_dir, f&#34;{file_root}_epoch{epoch + 1}{file_ext}&#34;
+            )
+            # Save the state dict, handling DataParallel wrapper correctly
+            state_dict_to_save = (
+                score_model.module.state_dict()
+                if isinstance(score_model, nn.DataParallel)
+                else score_model.state_dict()
+            )
+            torch.save(state_dict_to_save, chkpt_name)
+            print(f&#34;\nCheckpoint saved: {chkpt_name}&#34;)
+
+    # --- Final Model Save --- #
+    # (Already saved in the last checkpoint loop if save_checkpoint_every=1 or last epoch)
+    if n_epochs % save_checkpoint_every != 0:
+        final_state_dict = (
+            score_model.module.state_dict()
+            if isinstance(score_model, nn.DataParallel)
+            else score_model.state_dict()
+        )
+        torch.save(final_state_dict, save_model_to)
+        print(f&#34;\nFinal model state saved to {save_model_to}&#34;)
+
+    print(f&#34;\n--- Training completed --- &#34;)
+    print(f&#34;Final Epoch Loss: {final_epoch_loss:.4f}&#34;)
+    print(f&#34;Total NaN batches encountered: {nan_batches_total}&#34;)
+    return score_model</code></pre>
+</details>
+<div class="desc"><p>Trains the ScoreNet model using the specified diffusion process and dataset.</p>
+<p>Handles the training loop, optimization, loss calculation (delegated to the
+diffusion_process instance), gradient clipping, progress reporting, and
+saving the final model and periodic checkpoints.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>diffusion_process</code></strong></dt>
+<dd>The diffusion process instance defining the SDE and loss.</dd>
+<dt><strong><code>data_train</code></strong></dt>
+<dd>The training dataset (torch.utils.data.Dataset).</dd>
+<dt><strong><code>batch_size</code></strong></dt>
+<dd>Training batch size.</dd>
+<dt><strong><code>n_epochs</code></strong></dt>
+<dd>Number of training epochs.</dd>
+<dt><strong><code>learning_rate</code></strong></dt>
+<dd>Optimizer learning rate.</dd>
+<dt><strong><code>save_model_to</code></strong></dt>
+<dd>Path to save the final trained model state dictionary.</dd>
+<dt><strong><code>grad_clip_val</code></strong></dt>
+<dd>Maximum gradient norm for clipping (set &lt;= 0 to disable).</dd>
+<dt><strong><code>use_class_condition</code></strong></dt>
+<dd>Whether to train a class-conditional model.</dd>
+<dt><strong><code>num_classes</code></strong></dt>
+<dd>Number of classes (required if use_class_condition is True).</dd>
+<dt><strong><code>image_channels</code></strong></dt>
+<dd>Number of channels in the training images.</dd>
+<dt><strong><code>save_checkpoint_every</code></strong></dt>
+<dd>Save a checkpoint every N epochs.</dd>
+<dt><strong><code>use_notebook_tqdm</code></strong></dt>
+<dd>If True, use tqdm.notebook for progress bars (for Jupyter).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The trained ScoreNet model.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If use_class_condition is True but num_classes is not provided.</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess"><code class="flex name class">
+<span>class <span class="ident">VEDiffusionProcess</span></span>
+<span>(</span><span>sigma_param: float = 25.0, T: float = 1.0)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VEDiffusionProcess:
+    &#34;&#34;&#34;
+    Encapsulates the Variance Exploding (VE) SDE diffusion process.
+
+    This process models data generation through a stochastic differential equation
+    where the variance of the noise added to the data increases (explodes) over time.
+
+    Forward SDE:
+        dxt = g(t) * dWt
+        where drift is zero, and g(t) is the diffusion coefficient.
+
+    Reverse SDE:
+        dx\bar{t} = -g(t)^2 * \nabla log p_t(x\bar{t}) dt + g(t) * dW\bar{t}
+        where \nabla log p_t(x\bar{t}) is the score function estimated by a neural network.
+
+    The specific functional form of sigma(t) (and thus g(t)) follows the definition
+    commonly used in implementations based on the original paper.
+
+    Attributes:
+        kind (str): Identifier for the SDE type (&#34;VE&#34;).
+        sigma_param (float): Controls the maximum standard deviation (sigma_max).
+        T (float): The total integration time.
+        log_sigma (float): Precomputed log of sigma_param.
+        sigma_t (Callable): Function sigma(t) -&gt; std dev at time t.
+        g_t (Callable): Function g(t) -&gt; diffusion coefficient.
+        g2_t (Callable): Function g(t)^2.
+        mu_t (Callable): Function mu(x_0, t) -&gt; mean of p(xt | x0).
+    &#34;&#34;&#34;
+
+    kind = &#34;VE&#34;
+
+    def __init__(
+        self,
+        sigma_param: float = 25.0,
+        T: float = 1.0,
+    ):
+        &#34;&#34;&#34;Initializes the VE diffusion process parameters and functions.
+
+        Args:
+            sigma_param: The parameter controlling the scale of noise variance.
+                         Corresponds to `σ_max` in the paper.
+            T: The final time step for the diffusion process (default: 1.0).
+        &#34;&#34;&#34;
+        self.sigma_param = sigma_param
+        self.T = T
+        self.log_sigma = np.log(sigma_param)
+        print(
+            f&#34;Initializing VE diffusion process with sigma={sigma_param}, T={T}&#34;
+        )
+
+        def _sigma_t_internal(t: torch.Tensor) -&gt; torch.Tensor:
+            &#34;&#34;&#34;Calculates the standard deviation σ(t) for the VE SDE perturbation kernel.&#34;&#34;&#34;
+            t_scaled = torch.clamp(t / self.T, 0.0, 1.0).to(device).float()
+            log_sigma_tensor = torch.tensor(
+                self.log_sigma, device=t_scaled.device, dtype=torch.float32
+            )
+            # Variance derived from σ(t) = σ_min * (σ_max/σ_min)^t. Assuming σ_min -&gt; 0 leads
+            # to σ(t) ~ σ_max^t. The std dev here is σ_eff(t)^2 = ∫ g(s)^2 ds.
+            # σ(t) = sqrt( [σ_max^(2t) - 1] / [2 * log(σ_max)] )
+            var = (
+                0.5
+                * (self.sigma_param ** (2 * t_scaled) - 1.0 + 1e-8)
+                / (log_sigma_tensor + 1e-8)
+            )
+            return torch.sqrt(torch.clamp(var, min=1e-8))
+
+        self.sigma_t = _sigma_t_internal
+
+        def _g_t_internal(t: torch.Tensor) -&gt; torch.Tensor:
+            &#34;&#34;&#34;Calculates the diffusion coefficient g(t) = σ_max^t * sqrt(2 * log(σ_max)).&#34;&#34;&#34;
+            t_scaled = torch.clamp(t / self.T, 0.0, 1.0).to(device).float()
+            # --- OLD VERSION ---
+            return (
+                torch.tensor(
+                    self.sigma_param,
+                    device=t_scaled.device,
+                    dtype=torch.float32,
+                )
+                ** t_scaled
+            )
+            # --- END OLD VERSION ---
+            # log_sigma_tensor = torch.tensor(
+            #     self.log_sigma, device=t_scaled.device, dtype=torch.float32
+            # )
+            # g_t_val = (
+            #     torch.tensor(
+            #         self.sigma_param,
+            #         device=t_scaled.device,
+            #         dtype=torch.float32,
+            #     )
+            #     ** t_scaled
+            # ) * torch.sqrt(2 * log_sigma_tensor + 1e-8)
+            # return g_t_val
+
+        self.g_t = _g_t_internal
+
+        def _g2_t_internal(t: torch.Tensor) -&gt; torch.Tensor:
+            &#34;&#34;&#34;Calculates g(t)^2.&#34;&#34;&#34;
+            return self.g_t(t) ** 2
+
+        self.g2_t = _g2_t_internal
+
+        def _mu_t_internal(x_0: torch.Tensor, t: torch.Tensor) -&gt; torch.Tensor:
+            &#34;&#34;&#34;Calculates the mean mu(t) for the VE SDE (which is just x_0).&#34;&#34;&#34;
+            return x_0  # Mean is just x_0 for VE SDE with zero drift
+
+        self.mu_t = _mu_t_internal
+
+    # --- Core Process Methods ---
+
+    def marginal_prob(
+        self, x_0: torch.Tensor, t: torch.Tensor
+    ) -&gt; tuple[torch.Tensor, torch.Tensor]:
+        &#34;&#34;&#34;
+        Calculate the marginal probability parameters for p(xt | x0).
+
+        For the VE SDE, the marginal distribution is:
+        - Mean \mu(t) = x_0
+        - Standard Deviation \sigma(t) is given by self.sigma_t(t).
+
+        Args:
+            x_0: The initial data point (batch) at t=0.
+            t: The time step(s) (scalar or batch tensor).
+
+        Returns:
+            A tuple (mean, std_dev) where:
+            - mean: Tensor of the same shape as x_0.
+            - std_dev: Tensor broadcastable to x_0&#39;s shape containing sigma(t).
+        &#34;&#34;&#34;
+        mean = self.mu_t(x_0, t)
+        std_dev_t = self.sigma_t(t).view(-1, *([1] * (x_0.dim() - 1)))
+        return mean, std_dev_t
+
+    def sample_forward(
+        self, x_0: torch.Tensor, t: torch.Tensor
+    ) -&gt; tuple[torch.Tensor, torch.Tensor]:
+        &#34;&#34;&#34;
+        Samples from the perturbation kernel p(xt | x0) at time t.
+
+        Formula: x_t = \mu(t) + \sigma(t) * \epsilon, where \epsilon ~ N(0, I).
+        For VE SDE, this simplifies to: x_t = x_0 + \sigma(t) * \epsilon.
+
+        Args:
+            x_0: The initial data point (batch) at t=0.
+            t: The time step(s) (scalar or batch tensor).
+
+        Returns:
+            A tuple (x_t, noise) where:
+            - x_t: The noisy sample(s) at time t.
+            - noise: The standard Gaussian noise \epsilon used to generate the sample.
+        &#34;&#34;&#34;
+        mean, std = self.marginal_prob(x_0, t)
+        noise = torch.randn_like(x_0)
+        x_t = mean + std * noise
+        return x_t, noise
+
+    def score_fn(
+        self,
+        score_model: nn.Module,
+        x_t: torch.Tensor,
+        t: torch.Tensor,
+        class_labels=None,
+    ) -&gt; torch.Tensor:
+        &#34;&#34;&#34;
+        Calculates the score function \nabla log p_t(xt) using the trained neural network.
+
+        This relies on the ScoreNet model being configured correctly. For VE SDE,
+        ScoreNet internally divides its output by sigma(t), so the model&#39;s direct
+        output is the score.
+
+        Args:
+            score_model: The trained score network (potentially wrapped in DataParallel).
+            x_t: The noisy data point(s) at time t.
+            t: The time step(s).
+            class_labels: Optional class labels for conditional models.
+
+        Returns:
+            The estimated score tensor, \nabla log p_t(xt).
+        &#34;&#34;&#34;
+        t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+
+        # Unwrap model if DataParallel
+        model_module = (
+            score_model.module
+            if isinstance(score_model, nn.DataParallel)
+            else score_model
+        )
+
+        # Pass class labels if the model is conditional and labels are provided
+        if (
+            getattr(model_module, &#34;use_class_condition&#34;, False)
+            and class_labels is not None
+        ):
+            score = score_model(x_t, t_clamped, class_labels)
+        else:
+            score = score_model(x_t, t_clamped)
+
+        # Handle potential NaNs for numerical stability
+        if torch.isnan(score).any():
+            warnings.warn(
+                f&#34;NaN detected in predicted score at t={t.mean().item():.4f}. Replacing with zeros.&#34;,
+                RuntimeWarning,
+            )
+            score = torch.nan_to_num(score, nan=0.0)
+
+        return score
+
+    def loss_fn(
+        self,
+        score_model: nn.Module,
+        x_0: torch.Tensor,
+        y=None,
+        eps: float = 1e-5,
+    ) -&gt; torch.Tensor:
+        &#34;&#34;&#34;
+        Computes the score matching loss for the VE SDE.
+
+        The loss is based on denoising score matching principles, adapted for the VE SDE:
+        Loss = E_t [ \lambda(t) * || s_\theta(x_t, t) - \nabla log p_0t(x_t | x_0) ||^2 ]
+        where \lambda(t) is a weighting function, often chosen as 
+        E[||\nabla log p_0t(x_t | x_0)||^2]^-1.
+        For VE SDE, \nabla log p_0t(x_t | x_0) = - (x_t - x_0) / sigma(t)^2 
+        = - noise / sigma(t).
+        The common loss formulation simplifies to:
+        Loss = E_t [ || sigma(t) * s_\theta(x_t, t) + noise ||^2 ]
+        where s_\theta(x_t, t) is the score predicted by the model.
+
+        Args:
+            score_model: The score network model.
+            x_0: The original clean data batch.
+            y: Optional class labels for conditional training.
+            eps: A small epsilon to avoid sampling t exactly at 0 or T.
+
+        Returns:
+            The computed scalar loss value for the batch.
+        &#34;&#34;&#34;
+        # Sample time uniformly in [eps, T]
+        t = torch.rand(x_0.shape[0], device=x_0.device) * (self.T - eps) + eps
+
+        # Get noisy sample x_t and the noise \epsilon used
+        x_t, noise = self.sample_forward(x_0, t)
+
+        # Get standard deviation sigma(t)
+        sigma_t_val = self.sigma_t(t).view(-1, *([1] * (x_0.dim() - 1)))
+        sigma_t_val = torch.clamp(
+            sigma_t_val, min=1e-5
+        )  # Avoid division by zero
+
+        # Get model&#39;s score prediction
+        model_module = (
+            score_model.module
+            if isinstance(score_model, nn.DataParallel)
+            else score_model
+        )
+        if (
+            getattr(model_module, &#34;use_class_condition&#34;, False)
+            and y is not None
+        ):
+            predicted_score = score_model(x_t, t, y)
+        else:
+            predicted_score = score_model(x_t, t)
+
+        # Handle potential NaNs in prediction
+        if torch.isnan(predicted_score).any():
+            warnings.warn(
+                f&#34;NaN detected in predicted score during loss calculation at t={t.mean().item():.4f}. Replacing with zeros.&#34;,
+                RuntimeWarning,
+            )
+            predicted_score = torch.nan_to_num(predicted_score, nan=0.0)
+
+        # Calculate the loss term: (sigma(t) * score_prediction + noise)^2
+        # Sum over spatial/channel dimensions, then average over batch
+        loss_per_example = torch.sum(
+            (sigma_t_val * predicted_score + noise) ** 2,
+            dim=list(range(1, x_0.dim())),
+        )
+        loss = torch.mean(loss_per_example)
+        return loss
+
+    # --- SDE Coefficients (Forward and Reverse) ---
+
+    def sde_drift_forward(self) -&gt; Callable[..., torch.Tensor]:
+        &#34;&#34;&#34;
+        Returns the drift function f(x, t) for the forward VE SDE.
+
+        For the VE SDE defined here, the drift f(x, t) = 0.
+
+        Returns:
+            A function `drift(x_t, t)` that returns a zero tensor shaped like x_t.
+        &#34;&#34;&#34;
+
+        def _drift(x_t: torch.Tensor, t: torch.Tensor) -&gt; torch.Tensor:
+            # Drift is zero
+            return torch.zeros_like(x_t)
+
+        return _drift
+
+    def sde_diffusion(self) -&gt; Callable[..., torch.Tensor]:
+        &#34;&#34;&#34;
+        Returns the diffusion function g(t) for the VE SDE.
+
+        Returns:
+            The function `self.g_t(t)`.
+        &#34;&#34;&#34;
+        return self.g_t
+
+    def sde_drift_reverse(
+        self, score_model: nn.Module
+    ) -&gt; Callable[..., torch.Tensor]:
+        &#34;&#34;&#34;
+        Returns the drift function \tilde{f}(x, t) for the reverse VE SDE.
+
+        Formula: \tilde{f}(x, t) = -g(t)^2 * score_fn(x, t)
+        This corresponds to the drift used in the sampling process.
+
+        Args:
+            score_model: The trained score network.
+
+        Returns:
+            A function `drift_reverse(x_t, t, class_labels=None)` that computes the reverse drift.
+        &#34;&#34;&#34;
+        g2_fn = self.g2_t  # Function g(t)^2
+
+        def _drift_reverse(
+            x_t: torch.Tensor, t: torch.Tensor, class_labels=None
+        ) -&gt; torch.Tensor:
+            t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+            g2_t_val = g2_fn(t_clamped).view(-1, *([1] * (x_t.dim() - 1)))
+            g2_t_val = torch.clamp(g2_t_val, min=1e-7)  # Numerical stability
+
+            # Calculate the score using the model
+            score = self.score_fn(score_model, x_t, t_clamped, class_labels)
+            score = torch.clamp(
+                score, -1000, 1000
+            )  # Clamp score to prevent explosion
+
+            # Calculate reverse drift
+            drift = -g2_t_val * score
+            # Clamp final drift to prevent numerical issues in sampler
+            return torch.clamp(drift, -1000.0, 1000.0)
+
+        return _drift_reverse
+
+    def sde_diffusion_reverse(self) -&gt; Callable[..., torch.Tensor]:
+        &#34;&#34;&#34;
+        Returns the diffusion function \bar{g}(t) for the reverse VE SDE.
+
+        This is the same as the forward diffusion function g(t) for the
+        variance exploding SDE, as per the theory of SDEs.
+
+        Returns:
+            The function `self.g_t(t)`.
+        &#34;&#34;&#34;
+        return self.g_t</code></pre>
+</details>
+<div class="desc"><p>Encapsulates the Variance Exploding (VE) SDE diffusion process.</p>
+<pre><code>This process models data generation through a stochastic differential equation
+where the variance of the noise added to the data increases (explodes) over time.
+
+Forward SDE:
+    dxt = g(t) * dWt
+    where drift is zero, and g(t) is the diffusion coefficient.
+
+Reverse SDE:
+    dxar{t} = -g(t)^2 *
+</code></pre>
+<p>abla log p_t(xar{t}) dt + g(t) * dWar{t}
+where
+abla log p_t(xar{t}) is the score function estimated by a neural network.</p>
+<pre><code>The specific functional form of sigma(t) (and thus g(t)) follows the definition
+commonly used in implementations based on the original paper.
+
+Attributes:
+    kind (str): Identifier for the SDE type ("VE").
+    sigma_param (float): Controls the maximum standard deviation (sigma_max).
+    T (float): The total integration time.
+    log_sigma (float): Precomputed log of sigma_param.
+    sigma_t (Callable): Function sigma(t) -&gt; std dev at time t.
+    g_t (Callable): Function g(t) -&gt; diffusion coefficient.
+    g2_t (Callable): Function g(t)^2.
+    mu_t (Callable): Function mu(x_0, t) -&gt; mean of p(xt | x0).
+</code></pre>
+<p>Initializes the VE diffusion process parameters and functions.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sigma_param</code></strong></dt>
+<dd>The parameter controlling the scale of noise variance.
+Corresponds to <code>σ_max</code> in the paper.</dd>
+<dt><strong><code>T</code></strong></dt>
+<dd>The final time step for the diffusion process (default: 1.0).</dd>
+</dl></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.kind"><code class="name">var <span class="ident">kind</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.loss_fn"><code class="name flex">
+<span>def <span class="ident">loss_fn</span></span>(<span>self,<br>score_model: torch.nn.modules.module.Module,<br>x_0: torch.Tensor,<br>y=None,<br>eps: float = 1e-05) ‑> torch.Tensor</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def loss_fn(
+    self,
+    score_model: nn.Module,
+    x_0: torch.Tensor,
+    y=None,
+    eps: float = 1e-5,
+) -&gt; torch.Tensor:
+    &#34;&#34;&#34;
+    Computes the score matching loss for the VE SDE.
+
+    The loss is based on denoising score matching principles, adapted for the VE SDE:
+    Loss = E_t [ \lambda(t) * || s_\theta(x_t, t) - \nabla log p_0t(x_t | x_0) ||^2 ]
+    where \lambda(t) is a weighting function, often chosen as 
+    E[||\nabla log p_0t(x_t | x_0)||^2]^-1.
+    For VE SDE, \nabla log p_0t(x_t | x_0) = - (x_t - x_0) / sigma(t)^2 
+    = - noise / sigma(t).
+    The common loss formulation simplifies to:
+    Loss = E_t [ || sigma(t) * s_\theta(x_t, t) + noise ||^2 ]
+    where s_\theta(x_t, t) is the score predicted by the model.
+
+    Args:
+        score_model: The score network model.
+        x_0: The original clean data batch.
+        y: Optional class labels for conditional training.
+        eps: A small epsilon to avoid sampling t exactly at 0 or T.
+
+    Returns:
+        The computed scalar loss value for the batch.
+    &#34;&#34;&#34;
+    # Sample time uniformly in [eps, T]
+    t = torch.rand(x_0.shape[0], device=x_0.device) * (self.T - eps) + eps
+
+    # Get noisy sample x_t and the noise \epsilon used
+    x_t, noise = self.sample_forward(x_0, t)
+
+    # Get standard deviation sigma(t)
+    sigma_t_val = self.sigma_t(t).view(-1, *([1] * (x_0.dim() - 1)))
+    sigma_t_val = torch.clamp(
+        sigma_t_val, min=1e-5
+    )  # Avoid division by zero
+
+    # Get model&#39;s score prediction
+    model_module = (
+        score_model.module
+        if isinstance(score_model, nn.DataParallel)
+        else score_model
+    )
+    if (
+        getattr(model_module, &#34;use_class_condition&#34;, False)
+        and y is not None
+    ):
+        predicted_score = score_model(x_t, t, y)
+    else:
+        predicted_score = score_model(x_t, t)
+
+    # Handle potential NaNs in prediction
+    if torch.isnan(predicted_score).any():
+        warnings.warn(
+            f&#34;NaN detected in predicted score during loss calculation at t={t.mean().item():.4f}. Replacing with zeros.&#34;,
+            RuntimeWarning,
+        )
+        predicted_score = torch.nan_to_num(predicted_score, nan=0.0)
+
+    # Calculate the loss term: (sigma(t) * score_prediction + noise)^2
+    # Sum over spatial/channel dimensions, then average over batch
+    loss_per_example = torch.sum(
+        (sigma_t_val * predicted_score + noise) ** 2,
+        dim=list(range(1, x_0.dim())),
+    )
+    loss = torch.mean(loss_per_example)
+    return loss</code></pre>
+</details>
+<div class="desc"><p>Computes the score matching loss for the VE SDE.</p>
+<pre><code>    The loss is based on denoising score matching principles, adapted for the VE SDE:
+    Loss = E_t [ \lambda(t) * || s_ heta(x_t, t) -
+</code></pre>
+<p>abla log p_0t(x_t | x_0) ||^2 ]
+where \lambda(t) is a weighting function, often chosen as
+E[||
+abla log p_0t(x_t | x_0)||^2]^-1.
+For VE SDE,
+abla log p_0t(x_t | x_0) = - (x_t - x_0) / sigma(t)^2
+= - noise / sigma(t).
+The common loss formulation simplifies to:
+Loss = E_t [ || sigma(t) * s_
+heta(x_t, t) + noise ||^2 ]
+where s_
+heta(x_t, t) is the score predicted by the model.</p>
+<pre><code>    Args:
+        score_model: The score network model.
+        x_0: The original clean data batch.
+        y: Optional class labels for conditional training.
+        eps: A small epsilon to avoid sampling t exactly at 0 or T.
+
+    Returns:
+        The computed scalar loss value for the batch.
+</code></pre></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.marginal_prob"><code class="name flex">
+<span>def <span class="ident">marginal_prob</span></span>(<span>self, x_0: torch.Tensor, t: torch.Tensor) ‑> tuple[torch.Tensor, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def marginal_prob(
+    self, x_0: torch.Tensor, t: torch.Tensor
+) -&gt; tuple[torch.Tensor, torch.Tensor]:
+    &#34;&#34;&#34;
+    Calculate the marginal probability parameters for p(xt | x0).
+
+    For the VE SDE, the marginal distribution is:
+    - Mean \mu(t) = x_0
+    - Standard Deviation \sigma(t) is given by self.sigma_t(t).
+
+    Args:
+        x_0: The initial data point (batch) at t=0.
+        t: The time step(s) (scalar or batch tensor).
+
+    Returns:
+        A tuple (mean, std_dev) where:
+        - mean: Tensor of the same shape as x_0.
+        - std_dev: Tensor broadcastable to x_0&#39;s shape containing sigma(t).
+    &#34;&#34;&#34;
+    mean = self.mu_t(x_0, t)
+    std_dev_t = self.sigma_t(t).view(-1, *([1] * (x_0.dim() - 1)))
+    return mean, std_dev_t</code></pre>
+</details>
+<div class="desc"><p>Calculate the marginal probability parameters for p(xt | x0).</p>
+<p>For the VE SDE, the marginal distribution is:
+- Mean \mu(t) = x_0
+- Standard Deviation \sigma(t) is given by self.sigma_t(t).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x_0</code></strong></dt>
+<dd>The initial data point (batch) at t=0.</dd>
+<dt><strong><code>t</code></strong></dt>
+<dd>The time step(s) (scalar or batch tensor).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A tuple (mean, std_dev) where:
+- mean: Tensor of the same shape as x_0.
+- std_dev: Tensor broadcastable to x_0's shape containing sigma(t).</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sample_forward"><code class="name flex">
+<span>def <span class="ident">sample_forward</span></span>(<span>self, x_0: torch.Tensor, t: torch.Tensor) ‑> tuple[torch.Tensor, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sample_forward(
+    self, x_0: torch.Tensor, t: torch.Tensor
+) -&gt; tuple[torch.Tensor, torch.Tensor]:
+    &#34;&#34;&#34;
+    Samples from the perturbation kernel p(xt | x0) at time t.
+
+    Formula: x_t = \mu(t) + \sigma(t) * \epsilon, where \epsilon ~ N(0, I).
+    For VE SDE, this simplifies to: x_t = x_0 + \sigma(t) * \epsilon.
+
+    Args:
+        x_0: The initial data point (batch) at t=0.
+        t: The time step(s) (scalar or batch tensor).
+
+    Returns:
+        A tuple (x_t, noise) where:
+        - x_t: The noisy sample(s) at time t.
+        - noise: The standard Gaussian noise \epsilon used to generate the sample.
+    &#34;&#34;&#34;
+    mean, std = self.marginal_prob(x_0, t)
+    noise = torch.randn_like(x_0)
+    x_t = mean + std * noise
+    return x_t, noise</code></pre>
+</details>
+<div class="desc"><p>Samples from the perturbation kernel p(xt | x0) at time t.</p>
+<p>Formula: x_t = \mu(t) + \sigma(t) * \epsilon, where \epsilon ~ N(0, I).
+For VE SDE, this simplifies to: x_t = x_0 + \sigma(t) * \epsilon.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x_0</code></strong></dt>
+<dd>The initial data point (batch) at t=0.</dd>
+<dt><strong><code>t</code></strong></dt>
+<dd>The time step(s) (scalar or batch tensor).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A tuple (x_t, noise) where:
+- x_t: The noisy sample(s) at time t.
+- noise: The standard Gaussian noise \epsilon used to generate the sample.</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.score_fn"><code class="name flex">
+<span>def <span class="ident">score_fn</span></span>(<span>self,<br>score_model: torch.nn.modules.module.Module,<br>x_t: torch.Tensor,<br>t: torch.Tensor,<br>class_labels=None) ‑> torch.Tensor</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def score_fn(
+    self,
+    score_model: nn.Module,
+    x_t: torch.Tensor,
+    t: torch.Tensor,
+    class_labels=None,
+) -&gt; torch.Tensor:
+    &#34;&#34;&#34;
+    Calculates the score function \nabla log p_t(xt) using the trained neural network.
+
+    This relies on the ScoreNet model being configured correctly. For VE SDE,
+    ScoreNet internally divides its output by sigma(t), so the model&#39;s direct
+    output is the score.
+
+    Args:
+        score_model: The trained score network (potentially wrapped in DataParallel).
+        x_t: The noisy data point(s) at time t.
+        t: The time step(s).
+        class_labels: Optional class labels for conditional models.
+
+    Returns:
+        The estimated score tensor, \nabla log p_t(xt).
+    &#34;&#34;&#34;
+    t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+
+    # Unwrap model if DataParallel
+    model_module = (
+        score_model.module
+        if isinstance(score_model, nn.DataParallel)
+        else score_model
+    )
+
+    # Pass class labels if the model is conditional and labels are provided
+    if (
+        getattr(model_module, &#34;use_class_condition&#34;, False)
+        and class_labels is not None
+    ):
+        score = score_model(x_t, t_clamped, class_labels)
+    else:
+        score = score_model(x_t, t_clamped)
+
+    # Handle potential NaNs for numerical stability
+    if torch.isnan(score).any():
+        warnings.warn(
+            f&#34;NaN detected in predicted score at t={t.mean().item():.4f}. Replacing with zeros.&#34;,
+            RuntimeWarning,
+        )
+        score = torch.nan_to_num(score, nan=0.0)
+
+    return score</code></pre>
+</details>
+<div class="desc"><p>Calculates the score function
+abla log p_t(xt) using the trained neural network.</p>
+<pre><code>    This relies on the ScoreNet model being configured correctly. For VE SDE,
+    ScoreNet internally divides its output by sigma(t), so the model's direct
+    output is the score.
+
+    Args:
+        score_model: The trained score network (potentially wrapped in DataParallel).
+        x_t: The noisy data point(s) at time t.
+        t: The time step(s).
+        class_labels: Optional class labels for conditional models.
+
+    Returns:
+        The estimated score tensor,
+</code></pre>
+<p>abla log p_t(xt).</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_diffusion"><code class="name flex">
+<span>def <span class="ident">sde_diffusion</span></span>(<span>self) ‑> Callable[..., torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sde_diffusion(self) -&gt; Callable[..., torch.Tensor]:
+    &#34;&#34;&#34;
+    Returns the diffusion function g(t) for the VE SDE.
+
+    Returns:
+        The function `self.g_t(t)`.
+    &#34;&#34;&#34;
+    return self.g_t</code></pre>
+</details>
+<div class="desc"><p>Returns the diffusion function g(t) for the VE SDE.</p>
+<h2 id="returns">Returns</h2>
+<p>The function <code>self.g_t(t)</code>.</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_diffusion_reverse"><code class="name flex">
+<span>def <span class="ident">sde_diffusion_reverse</span></span>(<span>self) ‑> Callable[..., torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sde_diffusion_reverse(self) -&gt; Callable[..., torch.Tensor]:
+    &#34;&#34;&#34;
+    Returns the diffusion function \bar{g}(t) for the reverse VE SDE.
+
+    This is the same as the forward diffusion function g(t) for the
+    variance exploding SDE, as per the theory of SDEs.
+
+    Returns:
+        The function `self.g_t(t)`.
+    &#34;&#34;&#34;
+    return self.g_t</code></pre>
+</details>
+<div class="desc"><p>Returns the diffusion function ar{g}(t) for the reverse VE SDE.</p>
+<p>This is the same as the forward diffusion function g(t) for the
+variance exploding SDE, as per the theory of SDEs.</p>
+<h2 id="returns">Returns</h2>
+<p>The function <code>self.g_t(t)</code>.</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_drift_forward"><code class="name flex">
+<span>def <span class="ident">sde_drift_forward</span></span>(<span>self) ‑> Callable[..., torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sde_drift_forward(self) -&gt; Callable[..., torch.Tensor]:
+    &#34;&#34;&#34;
+    Returns the drift function f(x, t) for the forward VE SDE.
+
+    For the VE SDE defined here, the drift f(x, t) = 0.
+
+    Returns:
+        A function `drift(x_t, t)` that returns a zero tensor shaped like x_t.
+    &#34;&#34;&#34;
+
+    def _drift(x_t: torch.Tensor, t: torch.Tensor) -&gt; torch.Tensor:
+        # Drift is zero
+        return torch.zeros_like(x_t)
+
+    return _drift</code></pre>
+</details>
+<div class="desc"><p>Returns the drift function f(x, t) for the forward VE SDE.</p>
+<p>For the VE SDE defined here, the drift f(x, t) = 0.</p>
+<h2 id="returns">Returns</h2>
+<p>A function <code>drift(x_t, t)</code> that returns a zero tensor shaped like x_t.</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_drift_reverse"><code class="name flex">
+<span>def <span class="ident">sde_drift_reverse</span></span>(<span>self, score_model: torch.nn.modules.module.Module) ‑> Callable[..., torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sde_drift_reverse(
+    self, score_model: nn.Module
+) -&gt; Callable[..., torch.Tensor]:
+    &#34;&#34;&#34;
+    Returns the drift function \tilde{f}(x, t) for the reverse VE SDE.
+
+    Formula: \tilde{f}(x, t) = -g(t)^2 * score_fn(x, t)
+    This corresponds to the drift used in the sampling process.
+
+    Args:
+        score_model: The trained score network.
+
+    Returns:
+        A function `drift_reverse(x_t, t, class_labels=None)` that computes the reverse drift.
+    &#34;&#34;&#34;
+    g2_fn = self.g2_t  # Function g(t)^2
+
+    def _drift_reverse(
+        x_t: torch.Tensor, t: torch.Tensor, class_labels=None
+    ) -&gt; torch.Tensor:
+        t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+        g2_t_val = g2_fn(t_clamped).view(-1, *([1] * (x_t.dim() - 1)))
+        g2_t_val = torch.clamp(g2_t_val, min=1e-7)  # Numerical stability
+
+        # Calculate the score using the model
+        score = self.score_fn(score_model, x_t, t_clamped, class_labels)
+        score = torch.clamp(
+            score, -1000, 1000
+        )  # Clamp score to prevent explosion
+
+        # Calculate reverse drift
+        drift = -g2_t_val * score
+        # Clamp final drift to prevent numerical issues in sampler
+        return torch.clamp(drift, -1000.0, 1000.0)
+
+    return _drift_reverse</code></pre>
+</details>
+<div class="desc"><p>Returns the drift function
+ilde{f}(x, t) for the reverse VE SDE.</p>
+<p>Formula:
+ilde{f}(x, t) = -g(t)^2 * score_fn(x, t)
+This corresponds to the drift used in the sampling process.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>score_model</code></strong></dt>
+<dd>The trained score network.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A function <code>drift_reverse(x_t, t, class_labels=None)</code> that computes the reverse drift.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="diffusion.processes" href="index.html">diffusion.processes</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="diffusion.processes.variance_exploding_sde.generate_images" href="#diffusion.processes.variance_exploding_sde.generate_images">generate_images</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.get_score_model" href="#diffusion.processes.variance_exploding_sde.get_score_model">get_score_model</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.load_model" href="#diffusion.processes.variance_exploding_sde.load_model">load_model</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.train" href="#diffusion.processes.variance_exploding_sde.train">train</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess">VEDiffusionProcess</a></code></h4>
+<ul class="">
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.kind" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.kind">kind</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.loss_fn" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.loss_fn">loss_fn</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.marginal_prob" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.marginal_prob">marginal_prob</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sample_forward" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sample_forward">sample_forward</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.score_fn" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.score_fn">score_fn</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_diffusion" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_diffusion">sde_diffusion</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_diffusion_reverse" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_diffusion_reverse">sde_diffusion_reverse</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_drift_forward" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_drift_forward">sde_drift_forward</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_drift_reverse" href="#diffusion.processes.variance_exploding_sde.VEDiffusionProcess.sde_drift_reverse">sde_drift_reverse</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>diffusion.processes.variance_preserving API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>diffusion.processes.variance_preserving</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess"><code class="flex name class">
+<span>class <span class="ident">VPDiffusionProcess</span></span>
+<span>(</span><span>schedule: str = 'linear',<br>T: float = 1.0,<br>beta_min: float = 0.01,<br>beta_max: float = 0.95,<br>cosine_s: float = 0.008,<br>cosine_beta_min: float = None,<br>cosine_beta_max: float = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VPDiffusionProcess:
+    &#34;&#34;&#34;
+    Implements the Variance Preserving (VP) SDE diffusion process,
+    also known as the Ornstein-Uhlenbeck process in this context.
+    Uses configurable noise schedules (linear or cosine).
+
+    Forward SDE: dxt = -1/2 * \beta(t) * xt * dt + sqrt(\beta(t)) * dWt
+    Reverse SDE: dx\bar{t} = [-1/2 * \beta(t) * x\bar{t} - \beta(t) * 
+        \nabla log p_t(x\bar{t})] dt + sqrt(\beta(t)) * dW\bar{t}
+    &#34;&#34;&#34;
+
+    kind = &#34;VP&#34;
+
+    def __init__(
+        self,
+        schedule: str = &#34;linear&#34;,
+        T: float = 1.0,
+        beta_min: float = 0.01,  # Linear schedule param
+        beta_max: float = 0.95,  # Linear schedule param
+        cosine_s: float = 0.008,  # Cosine schedule param
+        cosine_beta_min: float = None, # Optional cosine specific clamp
+        cosine_beta_max: float = None  # Optional cosine specific clamp
+    ):
+        self.schedule_type = schedule
+        self.T = T
+        print(
+            f&#34;Initializing VP diffusion process with {schedule} schedule, T={T}.&#34;
+        )
+
+        if schedule == &#34;linear&#34;:
+            self.beta, self.alpha_bar, self.std_dev = (
+                get_linear_schedule_functions(
+                    beta_min=beta_min, beta_max=beta_max, T=T
+                )
+            )
+            self.beta_min = beta_min
+            self.beta_max = beta_max
+        elif schedule == &#34;cosine&#34;:
+            # Use provided cosine clamp values if available, otherwise use schedule func defaults
+            c_beta_min = cosine_beta_min if cosine_beta_min is not None else 1e-7 
+            c_beta_max = cosine_beta_max if cosine_beta_max is not None else 0.999
+            self.beta, self.alpha_bar, self.std_dev = (
+                get_cosine_schedule_functions(
+                    T=T, s=cosine_s, beta_min=c_beta_min, beta_max=c_beta_max
+                )
+            )
+            self.cosine_s = cosine_s
+            # Store the actual beta limits used for potential reference
+            self.cosine_beta_min_used = c_beta_min
+            self.cosine_beta_max_used = c_beta_max
+            print(f&#34;  Cosine schedule using beta clamp: [{c_beta_min:.1e}, {c_beta_max:.1f}]&#34;) # Add print
+        else:
+            raise ValueError(
+                f&#34;Unknown schedule: {schedule}. Choose &#39;linear&#39; or &#39;cosine&#39;.&#34;
+            )
+
+    def marginal_prob(
+        self, x_0: torch.Tensor, t: torch.Tensor
+    ) -&gt; tuple[torch.Tensor, torch.Tensor]:
+        &#34;&#34;&#34;
+        Calculate the mean and standard deviation of p(xt | x0) for the VP SDE.
+        \mu(t) = sqrt(\bar{\alpha}(t)) * x_0
+        \sigma(t) = sqrt(1 - \bar{\alpha}(t))
+
+        Returns:
+            Tuple[mean, std_dev]
+        &#34;&#34;&#34;
+        # Ensure t is on the correct device and clamped
+        t_clamped = torch.clamp(t, 0.0, self.T).to(x_0.device)
+        alpha_bar_t = self.alpha_bar(t_clamped).view(
+            -1, *([1] * (x_0.dim() - 1))
+        )
+        std_dev_t = self.std_dev(t_clamped).view(-1, *([1] * (x_0.dim() - 1)))
+
+        # Clamp alpha_bar_t slightly away from 1.0 to avoid mean being exactly x_0 at t=0
+        alpha_bar_t_sqrt = torch.sqrt(torch.clamp(alpha_bar_t, max=1.0 - 1e-8))
+        mean = alpha_bar_t_sqrt * x_0
+        std = std_dev_t
+        return mean, std
+
+    def sample_forward(
+        self, x_0: torch.Tensor, t: torch.Tensor
+    ) -&gt; tuple[torch.Tensor, torch.Tensor]:
+        &#34;&#34;&#34;
+        Sample x_t from x_0 at time t using the forward process analytical solution:
+        x_t = sqrt(\bar{\alpha}(t)) * x_0 + sqrt(1 - \bar{\alpha}(t)) * \epsilon, 
+        where \epsilon ~ N(0, I)
+
+        Returns:
+            Tuple[noisy_sample_x_t, noise_added_epsilon]
+        &#34;&#34;&#34;
+        mean, std = self.marginal_prob(x_0, t)
+        noise = torch.randn_like(x_0)
+        x_t = mean + std * noise
+        return x_t, noise  # Return sample and the noise used
+
+    def score_fn(
+        self,
+        score_model: nn.Module,
+        x_t: torch.Tensor,
+        t: torch.Tensor,
+        class_labels=None,
+    ) -&gt; torch.Tensor:
+        &#34;&#34;&#34;
+        Calculate the score \nabla log p_t(xt) assuming the score_model predicts x_0.
+        Score = -(x_t - sqrt(alpha_bar_t) * x_0_predicted) / (1 - alpha_bar_t)
+        Requires the model output *not* to be scaled by sigma(t).
+        &#34;&#34;&#34;
+        t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+        alpha_bar_t = self.alpha_bar(t_clamped).view(
+            -1, *([1] * (x_t.dim() - 1))
+        )
+        alpha_bar_t = torch.clamp(
+            alpha_bar_t, min=0.0, max=1.0 - 1e-7
+        )  # Ensure 1 - alpha_bar is not zero
+        sqrt_alpha_bar_t = torch.sqrt(alpha_bar_t)
+        one_minus_alpha_bar_t = 1.0 - alpha_bar_t
+
+        # Get x_0 prediction from model
+        # Assumes model output is x_0_hat (disable_final_scaling=True in get_score_model)
+        model_module = (
+            score_model.module
+            if isinstance(score_model, nn.DataParallel)
+            else score_model
+        )
+        if (
+            getattr(model_module, &#34;use_class_condition&#34;, False)
+            and class_labels is not None
+        ):
+            x_0_predicted = score_model(x_t, t_clamped, class_labels)
+        else:
+            x_0_predicted = score_model(x_t, t_clamped)
+
+        # Handle potential NaNs
+        if torch.isnan(x_0_predicted).any():
+            print(
+                f&#34;Warning: NaN in predicted x_0 at t={t.mean().item():.4f}. &#34;
+                f&#34;Replacing with zeros.&#34;
+            )
+            x_0_predicted = torch.nan_to_num(x_0_predicted, nan=0.0)
+
+        # Calculate score using the derived formula
+        # Add a small minimum value to the denominator for numerical stability near t=0
+        score = (
+            -(x_t - sqrt_alpha_bar_t * x_0_predicted) / torch.clamp(one_minus_alpha_bar_t, min=1e-7)
+        )
+        return score
+
+    def loss_fn(
+        self,
+        score_model: nn.Module,
+        x_0: torch.Tensor,
+        y=None,
+        eps: float = 1e-5,
+    ) -&gt; torch.Tensor:
+        &#34;&#34;&#34;
+        Compute the x_0 prediction loss.
+        Assumes the score_model is trained to predict the original clean image x_0.
+        Loss = E_t [ || model_output(x_t, t) - x_0 ||^2 ]
+        Requires model output *not* to be scaled by sigma(t).
+        &#34;&#34;&#34;
+        # Sample time uniformly in [eps, T]
+        t = torch.rand(x_0.shape[0], device=x_0.device) * (self.T - eps) + eps
+        x_t, noise = self.sample_forward(x_0, t)  # Get noisy sample x_t
+
+        # Get x_0 prediction from model
+        # Assumes model output is x_0_hat (disable_final_scaling=True in get_score_model)
+        model_module = (
+            score_model.module
+            if isinstance(score_model, nn.DataParallel)
+            else score_model
+        )
+        if (
+            getattr(model_module, &#34;use_class_condition&#34;, False)
+            and y is not None
+        ):
+            x_0_predicted = score_model(x_t, t, y)
+        else:
+            x_0_predicted = score_model(x_t, t)
+
+        # Handle potential NaNs
+        if torch.isnan(x_0_predicted).any():
+            print(
+                f&#34;Warning: NaN in predicted x_0 at t={t.mean().item():.4f} during loss. &#34;
+                f&#34;Replacing with zeros.&#34;
+            )
+            x_0_predicted = torch.nan_to_num(x_0_predicted, nan=0.0)
+
+        # Calculate MSE loss between predicted x_0 and actual x_0
+        loss = torch.mean(
+            torch.sum((x_0_predicted - x_0) ** 2, dim=list(range(1, x_0.dim())))
+        )
+        return loss
+
+    # --- SDE Coefficients (Forward and Reverse) ---
+
+    def sde_drift_forward(self) -&gt; Callable:
+        &#34;&#34;&#34;
+        Returns the drift function f(x, t) for the forward VP-SDE:
+        f(x, t) = -1/2 * \beta(t) * x
+        &#34;&#34;&#34;
+        beta_fn = self.beta
+
+        def _drift(x_t: torch.Tensor, t: torch.Tensor) -&gt; torch.Tensor:
+            t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+            beta_t = beta_fn(t_clamped).view(-1, *([1] * (x_t.dim() - 1)))
+            beta_t = torch.clamp(beta_t, 1e-7, 0.999)  # Stability clamp
+            return -0.5 * beta_t * x_t
+
+        return _drift
+
+    def diffusion_squared(self) -&gt; Callable:
+        &#34;&#34;&#34;
+        Returns the squared diffusion function g(t)^2 for the VP-SDE:
+        g(t)^2 = \beta(t)
+        &#34;&#34;&#34;
+        beta_fn = self.beta
+
+        def _diffusion_sq(t: torch.Tensor) -&gt; torch.Tensor:
+            t_clamped = torch.clamp(t, 0.0, self.T).to(
+                device
+            )  # Assuming t might come from integrator
+            beta_t = beta_fn(t_clamped)
+            return beta_t
+
+        return _diffusion_sq
+
+    def sde_drift_reverse(self, score_model: nn.Module) -&gt; Callable:
+        &#34;&#34;&#34;
+        Returns the drift function f\bar{x}(x, t) for the reverse VP-SDE:
+        f\bar{x}(x, t) = [-1/2 * \beta(t) * x - \beta(t) * \nabla log p_t(x)]
+                 = [-1/2 * \beta(t) * x - \beta(t) * score_fn(x, t)]
+        &#34;&#34;&#34;
+        beta_fn = self.beta
+
+        def _drift(
+            x_t: torch.Tensor, t: torch.Tensor, class_labels=None
+        ) -&gt; torch.Tensor:
+            # Ensure t is on the correct device and clamped
+            t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+            beta_t = beta_fn(t_clamped).view(-1, *([1] * (x_t.dim() - 1)))
+            beta_t = torch.clamp(beta_t, 1e-7, 0.999)  # Stability clamp
+
+            # Calculate score using the score_fn method
+            score = self.score_fn(score_model, x_t, t_clamped, class_labels)
+            
+            # score = torch.clamp(score, -1000, 1000) 
+
+            drift_term1 = -0.5 * beta_t * x_t
+            drift_term2 = -beta_t * score
+
+            result = drift_term1 + drift_term2
+            return result
+
+        return _drift
+
+    def sde_diffusion_reverse(self) -&gt; Callable:
+        &#34;&#34;&#34;
+        Returns the diffusion function g\bar{x}(t) for the reverse VP-SDE:
+        g\bar{x}(t) = sqrt(\beta(t))
+        &#34;&#34;&#34;
+        beta_fn = self.beta
+
+        def _diffusion(t: torch.Tensor) -&gt; torch.Tensor:
+            # Ensure t is on the correct device and clamped
+            t_clamped = torch.clamp(t, 0.0, self.T).to(device)
+            beta_t = beta_fn(t_clamped)
+            return torch.sqrt(beta_t)
+
+        return _diffusion
+
+    # --- Methods for Sampling ---
+
+    # def predict_x0(self, score_model: nn.Module, x_t: torch.Tensor, t: torch.Tensor, class_labels=None) -&gt; torch.Tensor:
+    #     &#34;&#34;&#34;
+    #     Directly predict x_0 using the score model.
+    #     Assumes the model is configured to output x_0_hat.
+    #     &#34;&#34;&#34;
+    #     t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+    #     model_module = score_model.module if isinstance(score_model, nn.DataParallel) else score_model
+    #
+    #     # Get x_0 prediction from model
+    #     if getattr(model_module, &#39;use_class_condition&#39;, False) and class_labels is not None:
+    #         x_0_predicted = score_model(x_t, t_clamped, class_labels)
+    #     else:
+    #         x_0_predicted = score_model(x_t, t_clamped)
+    #
+    #     # Handle potential NaNs
+    #     if torch.isnan(x_0_predicted).any():
+    #         print(f&#34;Warning: NaN in predicted x_0 at t={t.mean().item():.4f}. Replacing with zeros.&#34;)
+    #         x_0_predicted = torch.nan_to_num(x_0_predicted, nan=0.0)
+    #
+    #     return x_0_predicted</code></pre>
+</details>
+<div class="desc"><p>Implements the Variance Preserving (VP) SDE diffusion process,
+also known as the Ornstein-Uhlenbeck process in this context.
+Uses configurable noise schedules (linear or cosine).</p>
+<pre><code>Forward SDE: dxt = -1/2 * eta(t) * xt * dt + sqrt(eta(t)) * dWt
+Reverse SDE: dxar{t} = [-1/2 * eta(t) * xar{t} - eta(t) *
+</code></pre>
+<p>abla log p_t(xar{t})] dt + sqrt(eta(t)) * dWar{t}</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.kind"><code class="name">var <span class="ident">kind</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.diffusion_squared"><code class="name flex">
+<span>def <span class="ident">diffusion_squared</span></span>(<span>self) ‑> Callable</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def diffusion_squared(self) -&gt; Callable:
+    &#34;&#34;&#34;
+    Returns the squared diffusion function g(t)^2 for the VP-SDE:
+    g(t)^2 = \beta(t)
+    &#34;&#34;&#34;
+    beta_fn = self.beta
+
+    def _diffusion_sq(t: torch.Tensor) -&gt; torch.Tensor:
+        t_clamped = torch.clamp(t, 0.0, self.T).to(
+            device
+        )  # Assuming t might come from integrator
+        beta_t = beta_fn(t_clamped)
+        return beta_t
+
+    return _diffusion_sq</code></pre>
+</details>
+<div class="desc"><p>Returns the squared diffusion function g(t)^2 for the VP-SDE:
+g(t)^2 = eta(t)</p></div>
+</dd>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.loss_fn"><code class="name flex">
+<span>def <span class="ident">loss_fn</span></span>(<span>self,<br>score_model: torch.nn.modules.module.Module,<br>x_0: torch.Tensor,<br>y=None,<br>eps: float = 1e-05) ‑> torch.Tensor</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def loss_fn(
+    self,
+    score_model: nn.Module,
+    x_0: torch.Tensor,
+    y=None,
+    eps: float = 1e-5,
+) -&gt; torch.Tensor:
+    &#34;&#34;&#34;
+    Compute the x_0 prediction loss.
+    Assumes the score_model is trained to predict the original clean image x_0.
+    Loss = E_t [ || model_output(x_t, t) - x_0 ||^2 ]
+    Requires model output *not* to be scaled by sigma(t).
+    &#34;&#34;&#34;
+    # Sample time uniformly in [eps, T]
+    t = torch.rand(x_0.shape[0], device=x_0.device) * (self.T - eps) + eps
+    x_t, noise = self.sample_forward(x_0, t)  # Get noisy sample x_t
+
+    # Get x_0 prediction from model
+    # Assumes model output is x_0_hat (disable_final_scaling=True in get_score_model)
+    model_module = (
+        score_model.module
+        if isinstance(score_model, nn.DataParallel)
+        else score_model
+    )
+    if (
+        getattr(model_module, &#34;use_class_condition&#34;, False)
+        and y is not None
+    ):
+        x_0_predicted = score_model(x_t, t, y)
+    else:
+        x_0_predicted = score_model(x_t, t)
+
+    # Handle potential NaNs
+    if torch.isnan(x_0_predicted).any():
+        print(
+            f&#34;Warning: NaN in predicted x_0 at t={t.mean().item():.4f} during loss. &#34;
+            f&#34;Replacing with zeros.&#34;
+        )
+        x_0_predicted = torch.nan_to_num(x_0_predicted, nan=0.0)
+
+    # Calculate MSE loss between predicted x_0 and actual x_0
+    loss = torch.mean(
+        torch.sum((x_0_predicted - x_0) ** 2, dim=list(range(1, x_0.dim())))
+    )
+    return loss</code></pre>
+</details>
+<div class="desc"><p>Compute the x_0 prediction loss.
+Assumes the score_model is trained to predict the original clean image x_0.
+Loss = E_t [ || model_output(x_t, t) - x_0 ||^2 ]
+Requires model output <em>not</em> to be scaled by sigma(t).</p></div>
+</dd>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.marginal_prob"><code class="name flex">
+<span>def <span class="ident">marginal_prob</span></span>(<span>self, x_0: torch.Tensor, t: torch.Tensor) ‑> tuple[torch.Tensor, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def marginal_prob(
+    self, x_0: torch.Tensor, t: torch.Tensor
+) -&gt; tuple[torch.Tensor, torch.Tensor]:
+    &#34;&#34;&#34;
+    Calculate the mean and standard deviation of p(xt | x0) for the VP SDE.
+    \mu(t) = sqrt(\bar{\alpha}(t)) * x_0
+    \sigma(t) = sqrt(1 - \bar{\alpha}(t))
+
+    Returns:
+        Tuple[mean, std_dev]
+    &#34;&#34;&#34;
+    # Ensure t is on the correct device and clamped
+    t_clamped = torch.clamp(t, 0.0, self.T).to(x_0.device)
+    alpha_bar_t = self.alpha_bar(t_clamped).view(
+        -1, *([1] * (x_0.dim() - 1))
+    )
+    std_dev_t = self.std_dev(t_clamped).view(-1, *([1] * (x_0.dim() - 1)))
+
+    # Clamp alpha_bar_t slightly away from 1.0 to avoid mean being exactly x_0 at t=0
+    alpha_bar_t_sqrt = torch.sqrt(torch.clamp(alpha_bar_t, max=1.0 - 1e-8))
+    mean = alpha_bar_t_sqrt * x_0
+    std = std_dev_t
+    return mean, std</code></pre>
+</details>
+<div class="desc"><p>Calculate the mean and standard deviation of p(xt | x0) for the VP SDE.
+\mu(t) = sqrt(ar{lpha}(t)) * x_0
+\sigma(t) = sqrt(1 - ar{lpha}(t))</p>
+<h2 id="returns">Returns</h2>
+<p>Tuple[mean, std_dev]</p></div>
+</dd>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.sample_forward"><code class="name flex">
+<span>def <span class="ident">sample_forward</span></span>(<span>self, x_0: torch.Tensor, t: torch.Tensor) ‑> tuple[torch.Tensor, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sample_forward(
+    self, x_0: torch.Tensor, t: torch.Tensor
+) -&gt; tuple[torch.Tensor, torch.Tensor]:
+    &#34;&#34;&#34;
+    Sample x_t from x_0 at time t using the forward process analytical solution:
+    x_t = sqrt(\bar{\alpha}(t)) * x_0 + sqrt(1 - \bar{\alpha}(t)) * \epsilon, 
+    where \epsilon ~ N(0, I)
+
+    Returns:
+        Tuple[noisy_sample_x_t, noise_added_epsilon]
+    &#34;&#34;&#34;
+    mean, std = self.marginal_prob(x_0, t)
+    noise = torch.randn_like(x_0)
+    x_t = mean + std * noise
+    return x_t, noise  # Return sample and the noise used</code></pre>
+</details>
+<div class="desc"><p>Sample x_t from x_0 at time t using the forward process analytical solution:
+x_t = sqrt(ar{lpha}(t)) * x_0 + sqrt(1 - ar{lpha}(t)) * \epsilon,
+where \epsilon ~ N(0, I)</p>
+<h2 id="returns">Returns</h2>
+<p>Tuple[noisy_sample_x_t, noise_added_epsilon]</p></div>
+</dd>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.score_fn"><code class="name flex">
+<span>def <span class="ident">score_fn</span></span>(<span>self,<br>score_model: torch.nn.modules.module.Module,<br>x_t: torch.Tensor,<br>t: torch.Tensor,<br>class_labels=None) ‑> torch.Tensor</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def score_fn(
+    self,
+    score_model: nn.Module,
+    x_t: torch.Tensor,
+    t: torch.Tensor,
+    class_labels=None,
+) -&gt; torch.Tensor:
+    &#34;&#34;&#34;
+    Calculate the score \nabla log p_t(xt) assuming the score_model predicts x_0.
+    Score = -(x_t - sqrt(alpha_bar_t) * x_0_predicted) / (1 - alpha_bar_t)
+    Requires the model output *not* to be scaled by sigma(t).
+    &#34;&#34;&#34;
+    t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+    alpha_bar_t = self.alpha_bar(t_clamped).view(
+        -1, *([1] * (x_t.dim() - 1))
+    )
+    alpha_bar_t = torch.clamp(
+        alpha_bar_t, min=0.0, max=1.0 - 1e-7
+    )  # Ensure 1 - alpha_bar is not zero
+    sqrt_alpha_bar_t = torch.sqrt(alpha_bar_t)
+    one_minus_alpha_bar_t = 1.0 - alpha_bar_t
+
+    # Get x_0 prediction from model
+    # Assumes model output is x_0_hat (disable_final_scaling=True in get_score_model)
+    model_module = (
+        score_model.module
+        if isinstance(score_model, nn.DataParallel)
+        else score_model
+    )
+    if (
+        getattr(model_module, &#34;use_class_condition&#34;, False)
+        and class_labels is not None
+    ):
+        x_0_predicted = score_model(x_t, t_clamped, class_labels)
+    else:
+        x_0_predicted = score_model(x_t, t_clamped)
+
+    # Handle potential NaNs
+    if torch.isnan(x_0_predicted).any():
+        print(
+            f&#34;Warning: NaN in predicted x_0 at t={t.mean().item():.4f}. &#34;
+            f&#34;Replacing with zeros.&#34;
+        )
+        x_0_predicted = torch.nan_to_num(x_0_predicted, nan=0.0)
+
+    # Calculate score using the derived formula
+    # Add a small minimum value to the denominator for numerical stability near t=0
+    score = (
+        -(x_t - sqrt_alpha_bar_t * x_0_predicted) / torch.clamp(one_minus_alpha_bar_t, min=1e-7)
+    )
+    return score</code></pre>
+</details>
+<div class="desc"><p>Calculate the score
+abla log p_t(xt) assuming the score_model predicts x_0.
+Score = -(x_t - sqrt(alpha_bar_t) * x_0_predicted) / (1 - alpha_bar_t)
+Requires the model output <em>not</em> to be scaled by sigma(t).</p></div>
+</dd>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.sde_diffusion_reverse"><code class="name flex">
+<span>def <span class="ident">sde_diffusion_reverse</span></span>(<span>self) ‑> Callable</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sde_diffusion_reverse(self) -&gt; Callable:
+    &#34;&#34;&#34;
+    Returns the diffusion function g\bar{x}(t) for the reverse VP-SDE:
+    g\bar{x}(t) = sqrt(\beta(t))
+    &#34;&#34;&#34;
+    beta_fn = self.beta
+
+    def _diffusion(t: torch.Tensor) -&gt; torch.Tensor:
+        # Ensure t is on the correct device and clamped
+        t_clamped = torch.clamp(t, 0.0, self.T).to(device)
+        beta_t = beta_fn(t_clamped)
+        return torch.sqrt(beta_t)
+
+    return _diffusion</code></pre>
+</details>
+<div class="desc"><p>Returns the diffusion function gar{x}(t) for the reverse VP-SDE:
+gar{x}(t) = sqrt(eta(t))</p></div>
+</dd>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.sde_drift_forward"><code class="name flex">
+<span>def <span class="ident">sde_drift_forward</span></span>(<span>self) ‑> Callable</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sde_drift_forward(self) -&gt; Callable:
+    &#34;&#34;&#34;
+    Returns the drift function f(x, t) for the forward VP-SDE:
+    f(x, t) = -1/2 * \beta(t) * x
+    &#34;&#34;&#34;
+    beta_fn = self.beta
+
+    def _drift(x_t: torch.Tensor, t: torch.Tensor) -&gt; torch.Tensor:
+        t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+        beta_t = beta_fn(t_clamped).view(-1, *([1] * (x_t.dim() - 1)))
+        beta_t = torch.clamp(beta_t, 1e-7, 0.999)  # Stability clamp
+        return -0.5 * beta_t * x_t
+
+    return _drift</code></pre>
+</details>
+<div class="desc"><p>Returns the drift function f(x, t) for the forward VP-SDE:
+f(x, t) = -1/2 * eta(t) * x</p></div>
+</dd>
+<dt id="diffusion.processes.variance_preserving.VPDiffusionProcess.sde_drift_reverse"><code class="name flex">
+<span>def <span class="ident">sde_drift_reverse</span></span>(<span>self, score_model: torch.nn.modules.module.Module) ‑> Callable</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sde_drift_reverse(self, score_model: nn.Module) -&gt; Callable:
+    &#34;&#34;&#34;
+    Returns the drift function f\bar{x}(x, t) for the reverse VP-SDE:
+    f\bar{x}(x, t) = [-1/2 * \beta(t) * x - \beta(t) * \nabla log p_t(x)]
+             = [-1/2 * \beta(t) * x - \beta(t) * score_fn(x, t)]
+    &#34;&#34;&#34;
+    beta_fn = self.beta
+
+    def _drift(
+        x_t: torch.Tensor, t: torch.Tensor, class_labels=None
+    ) -&gt; torch.Tensor:
+        # Ensure t is on the correct device and clamped
+        t_clamped = torch.clamp(t, 0.0, self.T).to(x_t.device)
+        beta_t = beta_fn(t_clamped).view(-1, *([1] * (x_t.dim() - 1)))
+        beta_t = torch.clamp(beta_t, 1e-7, 0.999)  # Stability clamp
+
+        # Calculate score using the score_fn method
+        score = self.score_fn(score_model, x_t, t_clamped, class_labels)
+        
+        # score = torch.clamp(score, -1000, 1000) 
+
+        drift_term1 = -0.5 * beta_t * x_t
+        drift_term2 = -beta_t * score
+
+        result = drift_term1 + drift_term2
+        return result
+
+    return _drift</code></pre>
+</details>
+<div class="desc"><p>Returns the drift function far{x}(x, t) for the reverse VP-SDE:
+far{x}(x, t) = [-1/2 * eta(t) * x - eta(t) *
+abla log p_t(x)]
+= [-1/2 * eta(t) * x - eta(t) * score_fn(x, t)]</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="diffusion.processes" href="index.html">diffusion.processes</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess" href="#diffusion.processes.variance_preserving.VPDiffusionProcess">VPDiffusionProcess</a></code></h4>
+<ul class="">
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.diffusion_squared" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.diffusion_squared">diffusion_squared</a></code></li>
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.kind" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.kind">kind</a></code></li>
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.loss_fn" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.loss_fn">loss_fn</a></code></li>
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.marginal_prob" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.marginal_prob">marginal_prob</a></code></li>
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.sample_forward" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.sample_forward">sample_forward</a></code></li>
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.score_fn" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.score_fn">score_fn</a></code></li>
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.sde_diffusion_reverse" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.sde_diffusion_reverse">sde_diffusion_reverse</a></code></li>
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.sde_drift_forward" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.sde_drift_forward">sde_drift_forward</a></code></li>
+<li><code><a title="diffusion.processes.variance_preserving.VPDiffusionProcess.sde_drift_reverse" href="#diffusion.processes.variance_preserving.VPDiffusionProcess.sde_drift_reverse">sde_drift_reverse</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

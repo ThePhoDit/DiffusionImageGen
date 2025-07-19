@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>diffusion.processes.variance_exploding API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>diffusion.processes.variance_exploding</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="diffusion.processes.variance_exploding.backward_drift_coefficient"><code class="name flex">
+<span>def <span class="ident">backward_drift_coefficient</span></span>(<span>score_model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def backward_drift_coefficient(score_model):
+    &#34;&#34;&#34;Compute backward drift, potentially conditioned on class labels.&#34;&#34;&#34;
+
+    def _backward_drift_coefficient(
+        x_t, t, diffusion_coefficient, class_labels=None
+    ):
+        g_t = diffusion_coefficient(t)
+        g_t = g_t.view(-1, 1, 1, 1)  # Reshape for broadcasting
+        beta_t = g_t**2
+
+        # Pass class labels to the model forward pass if conditioning is enabled
+        if (
+            getattr(score_model.module, &#34;use_class_condition&#34;, False)
+            and class_labels is not None
+        ):
+            score = score_model(x_t, t, class_labels)
+        else:
+            score = score_model(x_t, t)
+
+        drift = -(beta_t * score)
+        return drift
+
+    return _backward_drift_coefficient</code></pre>
+</details>
+<div class="desc"><p>Compute backward drift, potentially conditioned on class labels.</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.bm_diffusion_coefficient"><code class="name flex">
+<span>def <span class="ident">bm_diffusion_coefficient</span></span>(<span>t, sigma)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bm_diffusion_coefficient(t, sigma):
+    return sigma**t</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.bm_drift_coefficient"><code class="name flex">
+<span>def <span class="ident">bm_drift_coefficient</span></span>(<span>x_t, t)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bm_drift_coefficient(x_t, t):
+    return torch.zeros_like(x_t)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.bm_mu_t"><code class="name flex">
+<span>def <span class="ident">bm_mu_t</span></span>(<span>x_0, t)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bm_mu_t(x_0, t):
+    return x_0</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.bm_sigma_t"><code class="name flex">
+<span>def <span class="ident">bm_sigma_t</span></span>(<span>t, sigma)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bm_sigma_t(t, sigma):
+    log_sigma = torch.log(torch.tensor(sigma, dtype=torch.float32))
+    return torch.sqrt(0.5 * (sigma ** (2 * t) - 1.0) / log_sigma)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.diffusion_coefficient"><code class="name flex">
+<span>def <span class="ident">diffusion_coefficient</span></span>(<span>t)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">diffusion_coefficient = lambda t: bm_diffusion_coefficient(t, sigma)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.drift_coefficient"><code class="name flex">
+<span>def <span class="ident">drift_coefficient</span></span>(<span>x_t, t)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bm_drift_coefficient(x_t, t):
+    return torch.zeros_like(x_t)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.generate_images"><code class="name flex">
+<span>def <span class="ident">generate_images</span></span>(<span>score_model,<br>n_images: int = 3,<br>final_time: float = 1.0,<br>target_class: int = None,<br>image_size: tuple = (28, 28),<br>n_channels: int = 3,<br>n_steps: int = 500) ‑> torch.Tensor</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_images(
+    score_model,
+    n_images: int = 3,
+    final_time: float = 1.0,
+    target_class: int = None,  # The desired class index
+    image_size: tuple = (28, 28),
+    n_channels: int = 3,
+    n_steps: int = 500,
+) -&gt; Tensor:
+    &#34;&#34;&#34;
+    Generate images using the score model, optionally conditioned on a target class.
+    Returns only the final generated images.
+
+    Args:
+        score_model: The score model used to generate images.
+        n_images: Number of images to generate.
+        final_time: The final time for the diffusion process.
+        target_class: The desired class index for the generated images.
+        image_size: The size of the generated images.
+        n_channels: The number of channels in the generated images.
+        n_steps: Number of steps for the Euler-Maruyama sampler.
+    &#34;&#34;&#34;
+    T = final_time
+    image_T = torch.randn(
+        n_images, n_channels, image_size[0], image_size[1], device=device
+    )
+
+    # Prepare class labels tensor if conditioning is requested and model supports it
+    class_labels = None
+    model_is_conditional = getattr(
+        score_model.module, &#34;use_class_condition&#34;, False
+    )
+
+    if target_class is not None:
+        if model_is_conditional:
+            print(
+                f&#34;Generating images for class {target_class} using conditioning.&#34;
+            )
+            class_labels = torch.full(
+                (n_images,), target_class, dtype=torch.long, device=device
+            )
+        else:
+            print(
+                f&#34;Warning: Model was not trained with class conditioning. Generating unconditioned images.&#34;
+            )
+            pass  # Continue with unconditional generation
+
+    with torch.no_grad():
+        # Wrapper for drift coefficient to pass class labels
+        def drift_fn_wrapper(x, t):
+            drift_calculator = backward_drift_coefficient(score_model)
+            return drift_calculator(x, t, diffusion_coefficient, class_labels)
+
+        # Run the integrator
+        times, synthetic_images_t = euler_maruyama_integrator(
+            image_T,
+            t_0=T,
+            t_end=1.0e-3,
+            n_steps=n_steps,
+            drift_coefficient=drift_fn_wrapper,
+            diffusion_coefficient=diffusion_coefficient,
+        )
+
+        # --- Correctly select only the final images ---
+        # Get the state at the last time step by indexing the last dimension
+        final_images = synthetic_images_t[..., -1]
+        # final_images should now have shape [N, C, H, W]
+
+    # Ensure output is in [0, 1] range (important for visualization)
+    # Check if normalization was applied during training - if so, reverse it here.
+    # Assuming output range should be [0, 1] for plotting.
+    final_images = torch.clamp(final_images, 0.0, 1.0)
+
+    return final_images  # Return only the final images tensor [N, C, H, W]</code></pre>
+</details>
+<div class="desc"><p>Generate images using the score model, optionally conditioned on a target class.
+Returns only the final generated images.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>score_model</code></strong></dt>
+<dd>The score model used to generate images.</dd>
+<dt><strong><code>n_images</code></strong></dt>
+<dd>Number of images to generate.</dd>
+<dt><strong><code>final_time</code></strong></dt>
+<dd>The final time for the diffusion process.</dd>
+<dt><strong><code>target_class</code></strong></dt>
+<dd>The desired class index for the generated images.</dd>
+<dt><strong><code>image_size</code></strong></dt>
+<dd>The size of the generated images.</dd>
+<dt><strong><code>n_channels</code></strong></dt>
+<dd>The number of channels in the generated images.</dd>
+<dt><strong><code>n_steps</code></strong></dt>
+<dd>Number of steps for the Euler-Maruyama sampler.</dd>
+</dl></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.get_score_model"><code class="name flex">
+<span>def <span class="ident">get_score_model</span></span>(<span>num_classes=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_score_model(num_classes=None):
+    &#34;&#34;&#34;Get a score model, optionally configured for class conditioning.&#34;&#34;&#34;
+    score_model_instance = ScoreNet(
+        marginal_prob_std=partial(bm_sigma_t, sigma=sigma),
+        image_channels=3,
+        channels=[64, 128, 256, 512],
+        num_classes=num_classes,  # Pass num_classes to enable conditioning
+    )
+    score_model = torch.nn.DataParallel(score_model_instance)
+    return score_model.to(device)</code></pre>
+</details>
+<div class="desc"><p>Get a score model, optionally configured for class conditioning.</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.load_model"><code class="name flex">
+<span>def <span class="ident">load_model</span></span>(<span>name: str = 'check_point.pth', num_classes=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_model(name: str = &#34;check_point.pth&#34;, num_classes=None):
+    &#34;&#34;&#34;Load a trained score model, specifying if it was class-conditioned.&#34;&#34;&#34;
+    model = get_score_model(
+        num_classes=num_classes
+    )  # Pass num_classes when loading
+    model.load_state_dict(torch.load(name, map_location=torch.device(device)))
+    model.eval()
+    return model</code></pre>
+</details>
+<div class="desc"><p>Load a trained score model, specifying if it was class-conditioned.</p></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.mu_t"><code class="name flex">
+<span>def <span class="ident">mu_t</span></span>(<span>x_0, t)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bm_mu_t(x_0, t):
+    return x_0</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.sigma_t"><code class="name flex">
+<span>def <span class="ident">sigma_t</span></span>(<span>t)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">sigma_t = lambda t: bm_sigma_t(t, sigma)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="diffusion.processes.variance_exploding.train"><code class="name flex">
+<span>def <span class="ident">train</span></span>(<span>data_train,<br>batch_size=32,<br>n_epochs=10,<br>learning_rate=0.001,<br>save_model_to: str = 'check_point.pth',<br>use_class_condition: bool = False,<br>num_classes: int = 10)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train(
+    data_train,
+    batch_size=32,
+    n_epochs=10,
+    learning_rate=1.0e-3,
+    save_model_to: str = &#34;check_point.pth&#34;,
+    use_class_condition: bool = False,  # Add flag to control conditioning
+    num_classes: int = 10,  # Default to 10 for MNIST/CIFAR
+):
+    &#34;&#34;&#34;Train the score model, optionally with class conditioning.&#34;&#34;&#34;
+    # Get the model, enabling class conditioning if requested
+    score_model = get_score_model(
+        num_classes=num_classes if use_class_condition else None
+    )
+
+    data_loader = DataLoader(
+        data_train,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=n_threads,
+    )
+    optimizer = Adam(score_model.parameters(), lr=learning_rate)
+    tqdm_epoch = trange(n_epochs, desc=&#34;Training epochs&#34;)
+
+    for epoch in tqdm_epoch:
+        avg_loss = 0.0
+        num_items = 0
+        batch_progress = tqdm(
+            data_loader, desc=f&#34;Epoch {epoch+1}/{n_epochs}&#34;, leave=False
+        )
+
+        for batch_idx, (x, y) in enumerate(batch_progress):
+            x = x.to(device)
+            # Pass labels to loss function if using conditioning
+            y_cond = y.to(device) if use_class_condition else None
+
+            loss = diffusion_process.loss_function(score_model, x, y_cond)
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            avg_loss += loss.item() * x.shape[0]
+            num_items += x.shape[0]
+            batch_progress.set_postfix(
+                {
+                    &#34;batch_loss&#34;: f&#34;{loss.item():.4f}&#34;,
+                    &#34;avg_loss&#34;: (
+                        f&#34;{avg_loss/num_items:.4f}&#34; if num_items &gt; 0 else &#34;N/A&#34;
+                    ),
+                }
+            )
+
+        epoch_loss = avg_loss / max(num_items, 1)
+        tqdm_epoch.set_postfix({&#34;epoch_loss&#34;: f&#34;{epoch_loss:.4f}&#34;})
+
+        if (epoch % 50 == 0) and epoch != 0:
+            file_parts = save_model_to.split(&#34;.&#34;)
+            chkpt_name = f&#34;{&#39;.&#39;.join(file_parts[:-1])}_{epoch}.{file_parts[-1]}&#34;
+            torch.save(score_model.state_dict(), chkpt_name)
+            print(f&#34;\nSaved checkpoint: {chkpt_name}&#34;)
+
+    torch.save(score_model.state_dict(), save_model_to)
+    print(f&#34;\nTraining completed. Final model saved to {save_model_to}&#34;)
+    return score_model</code></pre>
+</details>
+<div class="desc"><p>Train the score model, optionally with class conditioning.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="diffusion.processes.variance_exploding.DiffussionProcess"><code class="flex name class">
+<span>class <span class="ident">DiffussionProcess</span></span>
+<span>(</span><span>drift_coefficient: Callable[[float, float], float] = &lt;function DiffussionProcess.&lt;lambda&gt;&gt;,<br>diffusion_coefficient: Callable[[float], float] = &lt;function DiffussionProcess.&lt;lambda&gt;&gt;)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DiffussionProcess:
+
+    def __init__(
+        self,
+        drift_coefficient: Callable[[float, float], float] = lambda x_t, t: 0.0,
+        diffusion_coefficient: Callable[[float], float] = lambda t: 1.0,
+    ):
+        self.drift_coefficient = drift_coefficient
+        self.diffusion_coefficient = diffusion_coefficient</code></pre>
+</details>
+<div class="desc"></div>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="diffusion.processes.variance_exploding.GaussianDiffussionProcess" href="#diffusion.processes.variance_exploding.GaussianDiffussionProcess">GaussianDiffussionProcess</a></li>
+</ul>
+</dd>
+<dt id="diffusion.processes.variance_exploding.GaussianDiffussionProcess"><code class="flex name class">
+<span>class <span class="ident">GaussianDiffussionProcess</span></span>
+<span>(</span><span>drift_coefficient: Callable[[float, float], float] = &lt;function GaussianDiffussionProcess.&lt;lambda&gt;&gt;,<br>diffusion_coefficient: Callable[[float], float] = &lt;function GaussianDiffussionProcess.&lt;lambda&gt;&gt;,<br>mu_t: Callable[[float, float], float] = &lt;function GaussianDiffussionProcess.&lt;lambda&gt;&gt;,<br>sigma_t: Callable[[float], float] = &lt;function GaussianDiffussionProcess.&lt;lambda&gt;&gt;)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GaussianDiffussionProcess(DiffussionProcess):
+    &#34;&#34;&#34;
+    A class representing a Gaussian diffusion process, which models the evolution of a stochastic process
+    with a constant drift and diffusion coefficient. This process can be used to simulate Brownian motion
+    or other diffusion phenomena in a variety of applications.
+
+    Attributes:
+        drift_coefficient (Callable): A function that defines the drift term of the process.
+        diffusion_coefficient (Callable): A function that defines the diffusion term of the process.
+        mu_t (Callable): A function that computes the expected value of the process at time t given the initial state x_0.
+        sigma_t (Callable): A function that computes the standard deviation of the process at time t.
+
+    Args:
+        drift_coefficient (Callable): A function of the form `f(x_t, t)` that returns the drift term at state `x_t` and time `t`.
+        diffusion_coefficient (Callable): A function of the form `g(t)` that returns the diffusion coefficient at time `t`.
+        mu_t (Callable): A function of the form `h(x_0, t)` that computes the expected value of the process at time `t`.
+        sigma_t (Callable): A function of the form `k(t)` that computes the standard deviation of the process at time `t`.
+    &#34;&#34;&#34;
+
+    kind = &#34;Gaussian&#34;
+
+    def __init__(
+        self,
+        drift_coefficient: Callable[[float, float], float] = lambda x_t, t: 0.0,
+        diffusion_coefficient: Callable[[float], float] = lambda t: 1.0,
+        mu_t: Callable[[float, float], float] = lambda x_0, t: x_0,
+        sigma_t: Callable[[float], float] = lambda t: torch.sqrt(t),
+    ):
+        super().__init__(drift_coefficient, diffusion_coefficient)
+        self.mu_t = mu_t
+        self.sigma_t = sigma_t
+
+    def loss_function(self, score_model, x_0, y=None, eps=1e-5):
+        &#34;&#34;&#34;
+        Computes the loss for the diffusion process, optionally using class labels.
+        &#34;&#34;&#34;
+        t = torch.rand(x_0.shape[0], device=x_0.device) * (1.0 - eps) + eps
+        noise = torch.randn_like(x_0)
+        sigma = self.sigma_t(t).view(x_0.shape[0], *([1] * (x_0.dim() - 1)))
+        x_t = x_0 + sigma * noise
+
+        # Pass class labels to the model if it supports conditioning
+        if (
+            getattr(score_model.module, &#34;use_class_condition&#34;, False)
+            and y is not None
+        ):
+            score = score_model(x_t, t, y)
+        else:
+            score = score_model(x_t, t)
+
+        mse_per_example = torch.sum(
+            (sigma * score + noise) ** 2, dim=list(range(1, x_0.dim()))
+        )
+        loss = torch.mean(mse_per_example)
+        return loss</code></pre>
+</details>
+<div class="desc"><p>A class representing a Gaussian diffusion process, which models the evolution of a stochastic process
+with a constant drift and diffusion coefficient. This process can be used to simulate Brownian motion
+or other diffusion phenomena in a variety of applications.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>drift_coefficient</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>A function that defines the drift term of the process.</dd>
+<dt><strong><code>diffusion_coefficient</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>A function that defines the diffusion term of the process.</dd>
+<dt><strong><code>mu_t</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>A function that computes the expected value of the process at time t given the initial state x_0.</dd>
+<dt><strong><code>sigma_t</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>A function that computes the standard deviation of the process at time t.</dd>
+</dl>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>drift_coefficient</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>A function of the form <code>f(x_t, t)</code> that returns the drift term at state <code>x_t</code> and time <code>t</code>.</dd>
+<dt><strong><code>diffusion_coefficient</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>A function of the form <code>g(t)</code> that returns the diffusion coefficient at time <code>t</code>.</dd>
+<dt><strong><code>mu_t</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>A function of the form <code>h(x_0, t)</code> that computes the expected value of the process at time <code>t</code>.</dd>
+<dt><strong><code>sigma_t</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>A function of the form <code>k(t)</code> that computes the standard deviation of the process at time <code>t</code>.</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="diffusion.processes.variance_exploding.DiffussionProcess" href="#diffusion.processes.variance_exploding.DiffussionProcess">DiffussionProcess</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="diffusion.processes.variance_exploding.GaussianDiffussionProcess.kind"><code class="name">var <span class="ident">kind</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="diffusion.processes.variance_exploding.GaussianDiffussionProcess.loss_function"><code class="name flex">
+<span>def <span class="ident">loss_function</span></span>(<span>self, score_model, x_0, y=None, eps=1e-05)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def loss_function(self, score_model, x_0, y=None, eps=1e-5):
+    &#34;&#34;&#34;
+    Computes the loss for the diffusion process, optionally using class labels.
+    &#34;&#34;&#34;
+    t = torch.rand(x_0.shape[0], device=x_0.device) * (1.0 - eps) + eps
+    noise = torch.randn_like(x_0)
+    sigma = self.sigma_t(t).view(x_0.shape[0], *([1] * (x_0.dim() - 1)))
+    x_t = x_0 + sigma * noise
+
+    # Pass class labels to the model if it supports conditioning
+    if (
+        getattr(score_model.module, &#34;use_class_condition&#34;, False)
+        and y is not None
+    ):
+        score = score_model(x_t, t, y)
+    else:
+        score = score_model(x_t, t)
+
+    mse_per_example = torch.sum(
+        (sigma * score + noise) ** 2, dim=list(range(1, x_0.dim()))
+    )
+    loss = torch.mean(mse_per_example)
+    return loss</code></pre>
+</details>
+<div class="desc"><p>Computes the loss for the diffusion process, optionally using class labels.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="diffusion.processes" href="index.html">diffusion.processes</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="diffusion.processes.variance_exploding.backward_drift_coefficient" href="#diffusion.processes.variance_exploding.backward_drift_coefficient">backward_drift_coefficient</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.bm_diffusion_coefficient" href="#diffusion.processes.variance_exploding.bm_diffusion_coefficient">bm_diffusion_coefficient</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.bm_drift_coefficient" href="#diffusion.processes.variance_exploding.bm_drift_coefficient">bm_drift_coefficient</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.bm_mu_t" href="#diffusion.processes.variance_exploding.bm_mu_t">bm_mu_t</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.bm_sigma_t" href="#diffusion.processes.variance_exploding.bm_sigma_t">bm_sigma_t</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.diffusion_coefficient" href="#diffusion.processes.variance_exploding.diffusion_coefficient">diffusion_coefficient</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.drift_coefficient" href="#diffusion.processes.variance_exploding.drift_coefficient">drift_coefficient</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.generate_images" href="#diffusion.processes.variance_exploding.generate_images">generate_images</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.get_score_model" href="#diffusion.processes.variance_exploding.get_score_model">get_score_model</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.load_model" href="#diffusion.processes.variance_exploding.load_model">load_model</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.mu_t" href="#diffusion.processes.variance_exploding.mu_t">mu_t</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.sigma_t" href="#diffusion.processes.variance_exploding.sigma_t">sigma_t</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.train" href="#diffusion.processes.variance_exploding.train">train</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="diffusion.processes.variance_exploding.DiffussionProcess" href="#diffusion.processes.variance_exploding.DiffussionProcess">DiffussionProcess</a></code></h4>
+</li>
+<li>
+<h4><code><a title="diffusion.processes.variance_exploding.GaussianDiffussionProcess" href="#diffusion.processes.variance_exploding.GaussianDiffussionProcess">GaussianDiffussionProcess</a></code></h4>
+<ul class="">
+<li><code><a title="diffusion.processes.variance_exploding.GaussianDiffussionProcess.kind" href="#diffusion.processes.variance_exploding.GaussianDiffussionProcess.kind">kind</a></code></li>
+<li><code><a title="diffusion.processes.variance_exploding.GaussianDiffussionProcess.loss_function" href="#diffusion.processes.variance_exploding.GaussianDiffussionProcess.loss_function">loss_function</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

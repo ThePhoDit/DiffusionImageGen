@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>diffusion.samplers.imputation_sampler API documentation</title>
+<meta name="description" content="Imputation Sampler using RePaint strategy.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>diffusion.samplers.imputation_sampler</code></h1>
+</header>
+<section id="section-intro">
+<p>Imputation Sampler using RePaint strategy.</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="diffusion.samplers.imputation_sampler.repaint_sampler"><code class="name flex">
+<span>def <span class="ident">repaint_sampler</span></span>(<span>diffusion_process,<br>score_model: torch.nn.modules.module.Module,<br>x_masked: torch.Tensor,<br>mask: torch.Tensor,<br>t_0: float,<br>t_end: float,<br>n_steps: int,<br>jump_length: int,<br>jump_n_sample: int,<br>class_labels=None,<br>use_notebook_tqdm: bool = False) ‑> tuple[torch.Tensor, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def repaint_sampler(
+    diffusion_process,  # Instance of VPDiffusionProcess or VEDiffusionProcess
+    score_model: torch.nn.Module,  # Trained score network
+    x_masked: Tensor,  # Original image tensor with known values [-1, 1]
+    mask: Tensor,  # Binary mask (1=known, 0=unknown)
+    t_0: float,  # Starting integration time (usually T)
+    t_end: float,  # End integration time (usually eps &gt; 0)
+    n_steps: int,  # Total number of reverse steps
+    jump_length: int,  # How many steps back to jump (N)
+    jump_n_sample: int,  # How many times to resample for each jump (R)
+    class_labels=None,  # Optional class labels
+    use_notebook_tqdm: bool = False,
+) -&gt; tuple[Tensor, Tensor]:
+    &#34;&#34;&#34;
+    Implements image imputation using the RePaint strategy:
+    Alternates reverse diffusion steps with forward noising and resampling
+    of the known image regions.
+
+    Args:
+        diffusion_process: Diffusion process object (VP or VE).
+        score_model: Trained score model.
+        x_masked: Original known image data (normalized to [-1, 1]), shape (B, C, H, W).
+        mask: Binary mask tensor (1 for known, 0 for unknown), shape (B, C, H, W).
+        t_0: Starting time (T).
+        t_end: Ending time (eps).
+        n_steps: Total number of discretization steps for the full reverse process.
+        jump_length: Number of steps for the RePaint jump (N).
+        jump_n_sample: Number of resampling steps within each jump (R).
+        class_labels: Optional class labels.
+        use_notebook_tqdm: If True, use tqdm.notebook, otherwise use standard tqdm.
+
+    Returns:
+        Tuple (times, samples trajectory)
+    &#34;&#34;&#34;
+    device = x_masked.device
+    batch_size = x_masked.shape[0]
+
+    # Time steps
+    times = torch.linspace(t_0, t_end, n_steps + 1, device=device)
+
+    # Get SDE components (only reverse is needed for generation part)
+    drift_fn = diffusion_process.sde_drift_reverse(score_model)
+    diffusion_fn = diffusion_process.sde_diffusion_reverse()
+
+    # Initialize with random noise
+    x_t = torch.randn_like(x_masked)
+
+    # Trajectory storage
+    x_t_traj = torch.zeros(
+        (*x_masked.shape, n_steps + 1), device=device, dtype=x_masked.dtype
+    )
+    x_t_traj[..., 0] = x_t
+
+    print(
+        f&#34;Running RePaint Sampler: n_steps={n_steps}, jump_length={jump_length}, jump_n_sample={jump_n_sample}&#34;
+    )
+
+    time_steps_iter = range(n_steps)
+    desc = &#34;RePaint Sampling Steps&#34;
+    if use_notebook_tqdm:
+        time_steps_iter = tqdm(time_steps_iter, desc=desc)
+    else:
+        try:
+            from tqdm import tqdm
+
+            time_steps_iter = tqdm(time_steps_iter, desc=desc)
+        except ImportError:
+            pass  # Run without tqdm
+
+    for n in time_steps_iter:
+        t_current_idx = n
+        t_next_idx = n + 1
+        t_current = times[t_current_idx]
+        t_next = times[t_next_idx]
+        dt = t_next - t_current  # dt is negative
+
+        # --- Create time tensors ---
+        vec_t_current = torch.ones(batch_size, device=device) * t_current
+        vec_t_next = (
+            torch.ones(batch_size, device=device) * t_next
+        )  # &lt;-- Define vec_t_next here
+        # -------------------------
+
+        # --- Standard Reverse Diffusion Step (Euler-Maruyama) ---
+        f = drift_fn(x_t, vec_t_current, class_labels)
+        g = diffusion_fn(vec_t_current).view(-1, *([1] * (x_t.dim() - 1)))
+        z_p = torch.randn_like(x_t)
+        x_mean_next = x_t + f * dt
+        x_t_next_noised = x_mean_next + g * torch.sqrt(-dt) * z_p
+        # ------------------------------------------------------
+
+        # --- RePaint Resampling Step ---
+        if (
+            n % jump_length == 0 and n &gt; 0
+        ):  # Perform jump at intervals (skip first step)
+            for _ in range(jump_n_sample):
+                # 1. Calculate known image data at t_next using analytical formula
+                x_known_t_next, _ = diffusion_process.sample_forward(
+                    x_masked, vec_t_next
+                )
+
+                # 2. Noise x_t back to t_current (using forward SDE)
+                # Need forward diffusion/drift, simplified here assuming VE/VP structure
+                if diffusion_process.kind == &#34;VP&#34;:
+                    # VP forward: x_curr = sqrt(a_curr/a_next) * x_next + sqrt(1 - a_curr/a_next) * noise
+                    a_curr = diffusion_process.alpha_bar(vec_t_current).view(
+                        -1, 1, 1, 1
+                    )
+                    a_next = diffusion_process.alpha_bar(vec_t_next).view(
+                        -1, 1, 1, 1
+                    )
+                    alpha_ratio = torch.clamp(
+                        a_curr / (a_next + 1e-7), 0.0, 1.0
+                    )
+                    std_dev_fwd = torch.sqrt(
+                        torch.clamp(1.0 - alpha_ratio, min=1e-7)
+                    )
+                    z_fwd = torch.randn_like(x_t)
+                    x_t_noised_back = (
+                        torch.sqrt(alpha_ratio) * x_t_next_noised
+                        + std_dev_fwd * z_fwd
+                    )
+                elif diffusion_process.kind == &#34;VE&#34;:
+                    # VE forward: x_curr = x_next + sqrt(sigma_curr^2 - sigma_next^2) * noise
+                    var_curr = (
+                        diffusion_process.sigma_t(vec_t_current)
+                        .pow(2)
+                        .view(-1, 1, 1, 1)
+                    )
+                    var_next = (
+                        diffusion_process.sigma_t(vec_t_next)
+                        .pow(2)
+                        .view(-1, 1, 1, 1)
+                    )
+                    std_dev_fwd = torch.sqrt(
+                        torch.clamp(var_curr - var_next, min=1e-7)
+                    )
+                    z_fwd = torch.randn_like(x_t)
+                    x_t_noised_back = x_t_next_noised + std_dev_fwd * z_fwd
+                else:
+                    # Fallback/Error for unsupported process
+                    warnings.warn(
+                        f&#34;RePaint forward noise step not implemented for process type {diffusion_process.kind}. Using previous state.&#34;
+                    )
+                    x_t_noised_back = x_t_next_noised  # Simple fallback
+
+                # 3. Combine: Use noised-back sample in unknown regions, known data in known regions
+                x_t_next_noised = (
+                    x_t_noised_back * (1.0 - mask) + x_known_t_next * mask
+                )
+        # -----------------------------
+
+        # Update state for next iteration
+        x_t = x_t_next_noised
+        x_t_traj[..., t_next_idx] = x_t
+
+    return times, x_t_traj</code></pre>
+</details>
+<div class="desc"><p>Implements image imputation using the RePaint strategy:
+Alternates reverse diffusion steps with forward noising and resampling
+of the known image regions.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>diffusion_process</code></strong></dt>
+<dd>Diffusion process object (VP or VE).</dd>
+<dt><strong><code>score_model</code></strong></dt>
+<dd>Trained score model.</dd>
+<dt><strong><code>x_masked</code></strong></dt>
+<dd>Original known image data (normalized to [-1, 1]), shape (B, C, H, W).</dd>
+<dt><strong><code>mask</code></strong></dt>
+<dd>Binary mask tensor (1 for known, 0 for unknown), shape (B, C, H, W).</dd>
+<dt><strong><code>t_0</code></strong></dt>
+<dd>Starting time (T).</dd>
+<dt><strong><code>t_end</code></strong></dt>
+<dd>Ending time (eps).</dd>
+<dt><strong><code>n_steps</code></strong></dt>
+<dd>Total number of discretization steps for the full reverse process.</dd>
+<dt><strong><code>jump_length</code></strong></dt>
+<dd>Number of steps for the RePaint jump (N).</dd>
+<dt><strong><code>jump_n_sample</code></strong></dt>
+<dd>Number of resampling steps within each jump (R).</dd>
+<dt><strong><code>class_labels</code></strong></dt>
+<dd>Optional class labels.</dd>
+<dt><strong><code>use_notebook_tqdm</code></strong></dt>
+<dd>If True, use tqdm.notebook, otherwise use standard tqdm.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Tuple (times, samples trajectory)</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="diffusion.samplers" href="index.html">diffusion.samplers</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="diffusion.samplers.imputation_sampler.repaint_sampler" href="#diffusion.samplers.imputation_sampler.repaint_sampler">repaint_sampler</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

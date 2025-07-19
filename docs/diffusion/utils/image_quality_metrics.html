@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>diffusion.utils.image_quality_metrics API documentation</title>
+<meta name="description" content="Functions for calculating image quality metrics for generative models:
+- Average Loss (related to BPD)
+- Fréchet Inception Distance (FID)
+- Inception …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>diffusion.utils.image_quality_metrics</code></h1>
+</header>
+<section id="section-intro">
+<p>Functions for calculating image quality metrics for generative models:
+- Average Loss (related to BPD)
+- Fréchet Inception Distance (FID)
+- Inception Score (IS)</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="diffusion.utils.image_quality_metrics.calculate_activations"><code class="name flex">
+<span>def <span class="ident">calculate_activations</span></span>(<span>dataloader_or_tensor, model, device, max_samples=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_activations(
+    dataloader_or_tensor, model, device, max_samples=None
+):
+    &#34;&#34;&#34;Calculate Inception activations for a dataset or tensor.&#34;&#34;&#34;
+    model.eval()
+    activations = []
+
+    total_processed = 0
+
+    if isinstance(dataloader_or_tensor, DataLoader):
+        print(&#34;Calculating activations from DataLoader...&#34;)
+        iterator = iter(dataloader_or_tensor)
+        with torch.no_grad():
+            while True:
+                try:
+                    batch_data = next(iterator)
+                    # Handle datasets returning (image, label) or just image
+                    if isinstance(batch_data, (list, tuple)):
+                        batch = batch_data[0].to(device)
+                    else:
+                        batch = batch_data.to(device)
+
+                    if (
+                        max_samples is not None
+                        and total_processed &gt;= max_samples
+                    ):
+                        break
+
+                    current_batch_size = batch.shape[0]
+                    if max_samples is not None:
+                        remaining = max_samples - total_processed
+                        if current_batch_size &gt; remaining:
+                            batch = batch[:remaining]
+                            current_batch_size = remaining
+
+                    batch = preprocess_for_inception(batch)
+                    pred = model(batch)
+                    activations.append(pred.cpu().numpy())
+                    total_processed += current_batch_size
+                    if (
+                        max_samples is not None
+                        and total_processed &gt;= max_samples
+                    ):
+                        break  # Exit loop after processing enough
+                except StopIteration:
+                    break  # End of dataloader
+    elif torch.is_tensor(dataloader_or_tensor):
+        print(&#34;Calculating activations from Tensor...&#34;)
+        tensor_data = dataloader_or_tensor
+        if max_samples is not None and tensor_data.shape[0] &gt; max_samples:
+            tensor_data = tensor_data[:max_samples]
+
+        total_processed = tensor_data.shape[0]
+        # Process tensor in batches if needed (e.g., batch_size=50)
+        batch_size = 50
+        num_batches = int(np.ceil(total_processed / batch_size))
+        with torch.no_grad():
+            for i in range(num_batches):
+                start = i * batch_size
+                end = min((i + 1) * batch_size, total_processed)
+                batch = tensor_data[start:end].to(device)
+                batch = preprocess_for_inception(batch)
+                pred = model(batch)
+                activations.append(pred.cpu().numpy())
+    else:
+        raise TypeError(&#34;Input must be a PyTorch DataLoader or Tensor&#34;)
+
+    activations = np.concatenate(activations, axis=0)
+    if max_samples is not None:
+        activations = activations[:max_samples]  # Ensure exact count
+
+    print(f&#34;Calculated activations shape: {activations.shape}&#34;)
+    return activations</code></pre>
+</details>
+<div class="desc"><p>Calculate Inception activations for a dataset or tensor.</p></div>
+</dd>
+<dt id="diffusion.utils.image_quality_metrics.calculate_average_loss"><code class="name flex">
+<span>def <span class="ident">calculate_average_loss</span></span>(<span>diffusion_process,<br>score_model,<br>dataloader,<br>device,<br>use_class_condition=False,<br>num_batches=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_average_loss(
+    diffusion_process,
+    score_model,
+    dataloader,
+    device,
+    use_class_condition=False,
+    num_batches=None,
+):
+    &#34;&#34;&#34;
+    Calculates the average loss (surrogate for NLL/BPD) on a dataset.
+    Lower is generally better.
+    &#34;&#34;&#34;
+    score_model.eval()
+    total_loss = 0.0
+    total_samples = 0
+    batch_count = 0
+
+    print(&#34;Calculating average loss...&#34;)
+    with torch.no_grad():
+        for batch_data in dataloader:
+            # Handle datasets returning (image, label) or just image
+            if isinstance(batch_data, (list, tuple)):
+                x, y = batch_data
+                y = y.to(device) if use_class_condition else None
+            else:
+                x = batch_data
+                y = None
+
+            x = x.to(device)
+            loss = diffusion_process.loss_fn(score_model, x, y)
+
+            if torch.isnan(loss) or torch.isinf(loss):
+                warnings.warn(
+                    f&#34;NaN/Inf loss detected in batch {batch_count}. Skipping batch.&#34;
+                )
+                continue
+
+            total_loss += loss.item() * x.shape[0]
+            total_samples += x.shape[0]
+            batch_count += 1
+            if num_batches is not None and batch_count &gt;= num_batches:
+                break
+
+    if total_samples == 0:
+        return float(&#34;inf&#34;)
+
+    avg_loss = total_loss / total_samples
+    print(f&#34;Average Loss: {avg_loss:.4f}&#34;)
+    return avg_loss</code></pre>
+</details>
+<div class="desc"><p>Calculates the average loss (surrogate for NLL/BPD) on a dataset.
+Lower is generally better.</p></div>
+</dd>
+<dt id="diffusion.utils.image_quality_metrics.calculate_fid"><code class="name flex">
+<span>def <span class="ident">calculate_fid</span></span>(<span>real_dataloader, generated_images_tensor, inception_model, device, max_samples=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_fid(
+    real_dataloader,
+    generated_images_tensor,
+    inception_model,
+    device,
+    max_samples=None,
+):
+    &#34;&#34;&#34;
+    Calculates FID between real images (from dataloader) and generated images (tensor).
+    Lower is better.
+    &#34;&#34;&#34;
+    # Calculate activations
+    real_activations = calculate_activations(
+        real_dataloader, inception_model, device, max_samples=max_samples
+    )
+    gen_activations = calculate_activations(
+        generated_images_tensor,
+        inception_model,
+        device,
+        max_samples=max_samples,
+    )
+
+    # Ensure same number of samples are compared if max_samples was used
+    num_samples = min(real_activations.shape[0], gen_activations.shape[0])
+    if num_samples == 0:
+        warnings.warn(&#34;Not enough samples to calculate FID.&#34;)
+        return float(&#34;inf&#34;)
+
+    real_activations = real_activations[:num_samples]
+    gen_activations = gen_activations[:num_samples]
+    print(f&#34;Calculating FID using {num_samples} samples.&#34;)
+
+    fid_value = calculate_fid_from_activations(
+        real_activations, gen_activations
+    )
+    print(f&#34;FID: {fid_value:.4f}&#34;)
+    return fid_value</code></pre>
+</details>
+<div class="desc"><p>Calculates FID between real images (from dataloader) and generated images (tensor).
+Lower is better.</p></div>
+</dd>
+<dt id="diffusion.utils.image_quality_metrics.calculate_fid_from_activations"><code class="name flex">
+<span>def <span class="ident">calculate_fid_from_activations</span></span>(<span>act1, act2)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_fid_from_activations(act1, act2):
+    &#34;&#34;&#34;Calculates FID between two sets of activations.&#34;&#34;&#34;
+    mu1, sigma1 = act1.mean(axis=0), np.cov(act1, rowvar=False)
+    mu2, sigma2 = act2.mean(axis=0), np.cov(act2, rowvar=False)
+
+    # Calculate sum squared difference between means
+    ssdiff = np.sum((mu1 - mu2) ** 2.0)
+
+    # Calculate sqrt of product between cov
+    # Add small identity matrix for numerical stability
+    eps = 1e-6
+    covmean, _ = linalg.sqrtm(sigma1.dot(sigma2), disp=False)
+    if not np.isfinite(covmean).all():
+        warnings.warn(
+            &#34;FID calculation produced singular product; adding epsilon to diagonal of cov estimates&#34;
+        )
+        offset = np.eye(sigma1.shape[0]) * eps
+        covmean = linalg.sqrtm((sigma1 + offset).dot(sigma2 + offset))
+
+    # Numerical error might give slight imaginary component
+    if np.iscomplexobj(covmean):
+        if not np.allclose(np.diagonal(covmean).imag, 0, atol=1e-3):
+            m = np.max(np.abs(covmean.imag))
+            raise ValueError(
+                f&#34;Imaginary component {m} too high in matrix sqrt calculation&#34;
+            )
+        covmean = covmean.real
+
+    # Calculate score
+    tr_covmean = np.trace(covmean)
+    fid = ssdiff + np.trace(sigma1) + np.trace(sigma2) - 2.0 * tr_covmean
+
+    return fid</code></pre>
+</details>
+<div class="desc"><p>Calculates FID between two sets of activations.</p></div>
+</dd>
+<dt id="diffusion.utils.image_quality_metrics.calculate_inception_score"><code class="name flex">
+<span>def <span class="ident">calculate_inception_score</span></span>(<span>generated_images_tensor, inception_model, device, batch_size=50, splits=10, eps=1e-16)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_inception_score(
+    generated_images_tensor,
+    inception_model,
+    device,
+    batch_size=50,
+    splits=10,
+    eps=1e-16,
+):
+    &#34;&#34;&#34;
+    Calculates the Inception Score for a set of generated images.
+    Higher is better.
+    &#34;&#34;&#34;
+    N = generated_images_tensor.shape[0]
+    if N == 0:
+        warnings.warn(&#34;No generated images provided for Inception Score.&#34;)
+        return 0.0, 0.0
+
+    print(f&#34;Calculating Inception Score using {N} samples...&#34;)
+    inception_model.eval()
+    preds = []
+    num_batches = int(np.ceil(N / batch_size))
+
+    # Get predictions
+    with torch.no_grad():
+        for i in range(num_batches):
+            start = i * batch_size
+            end = min((i + 1) * batch_size, N)
+            batch = generated_images_tensor[start:end].to(device)
+            batch = preprocess_for_inception(batch)
+            # Need logits for Inception v3 to apply softmax
+            logits = inception_model(batch)
+            # If using the modified model returning features, need the original model for classification
+            # Let&#39;s reload original Inception v3 for classification probabilities
+            original_inception = (
+                models.inception_v3(pretrained=True, transform_input=False)
+                .to(device)
+                .eval()
+            )
+            logits = original_inception(batch)
+            # -----------------------------------------------------------------------------
+            p = torch.nn.functional.softmax(logits, dim=1)
+            preds.append(p.cpu().numpy())
+
+    preds = np.concatenate(preds, axis=0)
+
+    # Calculate scores
+    scores = []
+    for i in range(splits):
+        part = preds[i * (N // splits) : (i + 1) * (N // splits), :]
+        # Calculate p(y) - marginal distribution
+        py = np.mean(part, axis=0)
+        # Calculate KL divergence D_KL(p(y|x) || p(y)) for each x
+        kl_divs = []
+        for k in range(part.shape[0]):
+            pyx = part[k, :]
+            # D_KL = sum[ p(y|x) * log( p(y|x) / p(y) ) ]
+            kl = np.sum(pyx * (np.log(pyx + eps) - np.log(py + eps)))
+            kl_divs.append(kl)
+        # IS = exp( mean[ D_KL(...) ] )
+        scores.append(np.exp(np.mean(kl_divs)))
+
+    is_mean = np.mean(scores)
+    is_std = np.std(scores)
+    print(f&#34;Inception Score: {is_mean:.4f} +/- {is_std:.4f}&#34;)
+    return is_mean, is_std</code></pre>
+</details>
+<div class="desc"><p>Calculates the Inception Score for a set of generated images.
+Higher is better.</p></div>
+</dd>
+<dt id="diffusion.utils.image_quality_metrics.get_inception_v3"><code class="name flex">
+<span>def <span class="ident">get_inception_v3</span></span>(<span>device)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_inception_v3(device):
+    &#34;&#34;&#34;Load pre-trained Inception-v3 model.&#34;&#34;&#34;
+    # Load pre-trained Inception v3
+    inception_model = models.inception_v3(
+        pretrained=True, transform_input=False
+    )
+    # Modify the model to output features from the final average pooling layer
+    inception_model.fc = nn.Identity()  # Remove final classification layer
+    inception_model = inception_model.to(device)
+    inception_model.eval()
+    return inception_model</code></pre>
+</details>
+<div class="desc"><p>Load pre-trained Inception-v3 model.</p></div>
+</dd>
+<dt id="diffusion.utils.image_quality_metrics.preprocess_for_inception"><code class="name flex">
+<span>def <span class="ident">preprocess_for_inception</span></span>(<span>images_tensor)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def preprocess_for_inception(images_tensor):
+    &#34;&#34;&#34;Preprocess images for Inception-v3: resize, normalize [-1, 1] -&gt; [0, 1] -&gt; ImageNet norm.&#34;&#34;&#34;
+    # 1. Ensure input is [0, 1] range if it&#39;s [-1, 1]
+    if images_tensor.min() &lt; -0.1:  # Heuristic check for [-1, 1]
+        images_tensor = (images_tensor + 1.0) / 2.0
+    images_tensor = torch.clamp(images_tensor, 0.0, 1.0)
+
+    # 2. Resize to Inception&#39;s expected size (299x299)
+    resizer = transforms.Resize((299, 299), antialias=True)
+    images_tensor = resizer(images_tensor)
+
+    # 3. Repeat channels if grayscale
+    if images_tensor.shape[1] == 1:
+        images_tensor = images_tensor.repeat(1, 3, 1, 1)
+
+    # 4. Apply ImageNet normalization
+    normalizer = transforms.Normalize(
+        mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+    )
+    images_tensor = normalizer(images_tensor)
+
+    return images_tensor</code></pre>
+</details>
+<div class="desc"><p>Preprocess images for Inception-v3: resize, normalize [-1, 1] -&gt; [0, 1] -&gt; ImageNet norm.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="diffusion.utils" href="index.html">diffusion.utils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="diffusion.utils.image_quality_metrics.calculate_activations" href="#diffusion.utils.image_quality_metrics.calculate_activations">calculate_activations</a></code></li>
+<li><code><a title="diffusion.utils.image_quality_metrics.calculate_average_loss" href="#diffusion.utils.image_quality_metrics.calculate_average_loss">calculate_average_loss</a></code></li>
+<li><code><a title="diffusion.utils.image_quality_metrics.calculate_fid" href="#diffusion.utils.image_quality_metrics.calculate_fid">calculate_fid</a></code></li>
+<li><code><a title="diffusion.utils.image_quality_metrics.calculate_fid_from_activations" href="#diffusion.utils.image_quality_metrics.calculate_fid_from_activations">calculate_fid_from_activations</a></code></li>
+<li><code><a title="diffusion.utils.image_quality_metrics.calculate_inception_score" href="#diffusion.utils.image_quality_metrics.calculate_inception_score">calculate_inception_score</a></code></li>
+<li><code><a title="diffusion.utils.image_quality_metrics.get_inception_v3" href="#diffusion.utils.image_quality_metrics.get_inception_v3">get_inception_v3</a></code></li>
+<li><code><a title="diffusion.utils.image_quality_metrics.preprocess_for_inception" href="#diffusion.utils.image_quality_metrics.preprocess_for_inception">preprocess_for_inception</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>
